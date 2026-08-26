@@ -6,7 +6,11 @@
 
 <title>Myte</title>
 
-<script src="https://download.playfab.com/PlayFabClientApi.js"></script>
+<script
+    src="https://download.playfab.com/PlayFabClientApi.js"
+    onload="playFabLoaded()"
+    onerror="playFabFailed()">
+</script>
 
 <style>
 
@@ -38,1162 +42,696 @@ button {
     cursor: pointer;
 }
 
-
 /* LOGIN */
 
 #loginScreen {
-
     position: fixed;
-
     inset: 0;
-
     display: none;
-
     align-items: center;
-
     justify-content: center;
-
     background: #080709;
 }
 
-
 .loginBox {
-
     width: 390px;
-
     padding: 38px;
-
     background: #111012;
-
     border: 1px solid #28242a;
 }
 
-
 .logo {
-
     font-size: 34px;
-
     margin-bottom: 7px;
 }
 
-
 .logo span,
 .smallLogo span {
-
     color: #694080;
 }
 
-
 .subtitle {
-
     color: #777;
-
     font-size: 13px;
-
     margin-bottom: 32px;
 }
 
-
 .loginTitle {
-
     font-size: 23px;
-
     margin-bottom: 22px;
 }
 
-
 .inputGroup {
-
     margin-bottom: 15px;
 }
 
-
 .inputGroup label {
-
     display: block;
-
     color: #888;
-
     font-size: 12px;
-
     margin-bottom: 6px;
 }
 
-
 .inputGroup input {
-
     width: 100%;
-
     height: 43px;
-
     padding: 0 12px;
-
     border: 1px solid #363139;
-
     background: #09080a;
-
     color: white;
-
     outline: none;
 }
 
-
 .inputGroup input:focus {
-
     border-color: #694080;
 }
 
-
 .primaryButton {
-
     width: 100%;
-
     height: 43px;
-
     border: 0;
-
     background: #694080;
-
     color: white;
 }
 
-
 .primaryButton:hover {
-
     background: #794993;
 }
 
-
 .secondaryButton {
-
     width: 100%;
-
     height: 43px;
-
     margin-top: 9px;
-
     border: 1px solid #38333a;
-
     background: transparent;
-
     color: #aaa;
 }
 
-
 .secondaryButton:hover {
-
     background: #19161a;
 }
 
-
 .loginMessage {
-
     min-height: 20px;
-
     margin-top: 15px;
-
     font-size: 12px;
-
     color: #777;
 }
 
-
 .error {
-
     color: #d77676;
 }
-
 
 /* LOADING */
 
 #loadingScreen {
-
     position: fixed;
-
     inset: 0;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     background: #080709;
-
     z-index: 1000;
 }
 
-
 .loadingTitle {
-
     font-size: 23px;
-
     margin-bottom: 10px;
 }
 
-
 .loadingText {
-
     color: #777;
-
     font-size: 13px;
 }
-
 
 /* BAN */
 
 #banScreen {
-
     position: fixed;
-
     inset: 0;
-
     display: none;
-
     align-items: center;
-
     justify-content: center;
-
     background: #080709;
-
     z-index: 900;
 }
 
-
 .banBox {
-
     width: 420px;
-
     padding: 38px;
-
     background: #111012;
-
     border: 1px solid #332a35;
 }
 
-
 .banTitle {
-
     font-size: 27px;
-
     margin-bottom: 28px;
 }
 
-
 .banRow {
-
     padding: 15px 0;
-
     border-bottom: 1px solid #2b262d;
 }
 
-
 .banLabel {
-
     color: #777;
-
     font-size: 10px;
-
     text-transform: uppercase;
-
     margin-bottom: 7px;
 }
 
-
 .banValue {
-
     color: #ddd;
-
     font-size: 14px;
 }
 
-
 .banButton {
-
     width: 100%;
-
     height: 42px;
-
     margin-top: 25px;
-
     border: 1px solid #39343c;
-
     background: transparent;
-
     color: #bbb;
 }
-
 
 /* DASHBOARD */
 
 #dashboard {
-
     position: fixed;
-
     inset: 0;
-
     display: none;
-
     background: #080709;
 }
 
-
 .topBar {
-
     height: 65px;
-
     display: flex;
-
     align-items: center;
-
     padding: 0 28px;
-
     border-bottom: 1px solid #242027;
-
     background: #0d0b0e;
 }
 
-
 .smallLogo {
-
     font-size: 21px;
-
     margin-right: 45px;
 }
 
-
 .navItem {
-
     height: 65px;
-
     display: flex;
-
     align-items: center;
-
     font-size: 13px;
-
     border-bottom: 2px solid #694080;
 }
 
-
 .profileTop {
-
     margin-left: auto;
-
     display: flex;
-
     align-items: center;
-
     gap: 10px;
-
     cursor: pointer;
 }
 
-
 .avatar {
-
     width: 35px;
-
     height: 35px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     background: #201524;
-
     border: 1px solid #45304e;
 }
 
-
 .profileName {
-
     font-size: 13px;
 }
 
-
 .profileStatus {
-
     margin-top: 2px;
-
     color: #55c76a;
-
     font-size: 10px;
 }
 
-
 .page {
-
     height: calc(100% - 65px);
-
     padding: 40px 45px;
-
     overflow: auto;
 }
 
-
 .welcome {
-
     font-size: 29px;
-
     margin-bottom: 7px;
 }
 
-
 .description {
-
     color: #777;
-
     font-size: 13px;
-
     margin-bottom: 40px;
 }
 
-
 .sectionTitle {
-
     color: #777;
-
     font-size: 11px;
-
     text-transform: uppercase;
-
     letter-spacing: 1px;
-
     margin-bottom: 13px;
 }
 
-
 .gamesGrid,
 .storeGames {
-
     display: flex;
-
     gap: 18px;
-
     flex-wrap: wrap;
 }
 
-
 .gameTile,
 .storeGame {
-
     width: 190px;
-
     height: 170px;
-
     position: relative;
-
     background: #111012;
-
     border: 1px solid #2d2830;
-
     cursor: pointer;
-
     user-select: none;
 }
 
-
 .gameTile:hover,
 .storeGame:hover {
-
     background: #171419;
-
     border-color: #483a4e;
 }
 
-
 .gameIcon,
 .storeGameIcon {
-
     position: absolute;
-
     left: 18px;
-
     top: 18px;
-
     width: 65px;
-
     height: 65px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     background: #18151a;
-
     border: 1px solid #302a32;
-
     color: #aaa;
-
     font-size: 10px;
 }
-
 
 .gameName,
 .storeGameName {
-
     position: absolute;
-
     left: 18px;
-
     bottom: 18px;
-
     font-size: 16px;
 }
 
-
 .gameDescription {
-
     position: absolute;
-
     left: 18px;
-
     bottom: 38px;
-
     color: #69636c;
-
     font-size: 10px;
 }
-
 
 /* NOTICE */
 
 .notice {
-
     width: 100%;
-
     max-width: 850px;
-
     margin-top: 42px;
-
     padding: 18px;
-
     background: #111012;
-
     border: 1px solid #302a32;
 }
 
-
 .noticeTitle {
-
     color: #694080;
-
     font-size: 11px;
-
     text-transform: uppercase;
-
     margin-bottom: 9px;
 }
 
-
 .noticeText {
-
     color: #aaa;
-
     font-size: 13px;
-
     line-height: 1.5;
 }
-
 
 /* STORE */
 
 #storePage,
 #gameDetailsPage {
-
     position: fixed;
-
     inset: 0;
-
     display: none;
-
     background: #080709;
-
     z-index: 100;
 }
 
-
 .storeTopBar,
 .detailsTopBar {
-
     height: 65px;
-
     display: flex;
-
     align-items: center;
-
     padding: 0 28px;
-
     background: #0d0b0e;
-
     border-bottom: 1px solid #242027;
 }
 
-
 .storeBack,
 .detailsBack {
-
     height: 35px;
-
     padding: 0 15px;
-
     margin-right: 20px;
-
     border: 1px solid #39343c;
-
     background: transparent;
-
     color: #aaa;
 }
 
-
 .storeBack:hover,
 .detailsBack:hover {
-
     background: #19161b;
-
     color: white;
 }
 
-
 .storePageTitle {
-
     font-size: 21px;
 }
 
-
 .storePageContent {
-
     padding: 45px;
 }
-
 
 /* DETAILS */
 
 .detailsContent {
-
     padding: 55px;
 }
 
-
 .detailsIcon {
-
     width: 110px;
-
     height: 110px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     background: #18151a;
-
     border: 1px solid #302a32;
-
     color: #aaa;
-
     margin-bottom: 25px;
 }
 
-
 .detailsTitle {
-
     font-size: 30px;
-
     margin-bottom: 12px;
 }
 
-
 .detailsDescription {
-
     max-width: 600px;
-
     color: #888;
-
     line-height: 1.6;
-
     font-size: 14px;
-
     margin-bottom: 28px;
 }
 
-
 .downloadButton {
-
     min-width: 140px;
-
     height: 42px;
-
     padding: 0 22px;
-
     border: 0;
-
     background: #694080;
-
     color: white;
 }
 
-
 .downloadButton:disabled {
-
     opacity: .55;
 }
 
-
 .downloadArea {
-
     display: none;
-
     width: 400px;
-
     max-width: 100%;
 }
 
-
 .downloadText {
-
     color: #aaa;
-
     font-size: 13px;
-
     margin-bottom: 10px;
 }
 
-
 .progressBackground {
-
     width: 100%;
-
     height: 6px;
-
     background: #28232a;
 }
 
-
 .progressBar {
-
     width: 0%;
-
     height: 100%;
-
     background: #694080;
 }
-
 
 /* PROFILE */
 
 #profilePanel {
-
     position: fixed;
-
     right: -360px;
-
     top: 0;
-
     width: 360px;
-
     height: 100%;
-
     padding: 35px;
-
     background: #111012;
-
     border-left: 1px solid #302933;
-
     z-index: 500;
-
     transition: right .2s;
 }
 
-
 #profilePanel.open {
-
     right: 0;
 }
 
-
 .closeProfile {
-
     position: absolute;
-
     top: 18px;
-
     right: 20px;
-
     border: 0;
-
     background: transparent;
-
     color: #777;
-
     font-size: 22px;
 }
 
-
 .profileTitle {
-
     font-size: 25px;
-
     margin-bottom: 30px;
 }
 
-
 .largeAvatar {
-
     width: 75px;
-
     height: 75px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     margin-bottom: 15px;
-
     background: #201524;
-
     border: 1px solid #45304e;
-
     font-size: 27px;
 }
 
-
 .panelGamertag {
-
     font-size: 19px;
 }
 
-
 .panelUserId {
-
     color: #777;
-
     font-size: 11px;
-
     margin-top: 5px;
 }
 
-
 .divider {
-
     width: 100%;
-
     height: 1px;
-
     margin: 28px 0;
-
     background: #2d2730;
 }
 
-
 .logoutButton {
-
     width: 100%;
-
     height: 42px;
-
     border: 1px solid #39333b;
-
     background: transparent;
-
     color: #bbb;
 }
 
-
 .adminButton {
-
     width: 100%;
-
     height: 42px;
-
     margin-top: 10px;
-
     border: 1px solid #694080;
-
     background: transparent;
-
     color: #c89bdd;
 }
-
 
 /* ADMIN */
 
 #adminPanel {
-
     position: fixed;
-
     inset: 0;
-
     display: none;
-
     background: #080709;
-
     z-index: 800;
 }
 
-
 .adminTop {
-
     height: 65px;
-
     display: flex;
-
     align-items: center;
-
     padding: 0 28px;
-
     background: #0d0b0e;
-
     border-bottom: 1px solid #242027;
 }
 
-
 .adminTitle {
-
     font-size: 21px;
 }
 
-
 .adminContent {
-
     padding: 35px;
-
     overflow: auto;
-
     height: calc(100% - 65px);
 }
 
-
 .adminSearch {
-
     display: flex;
-
     gap: 10px;
-
     max-width: 700px;
 }
 
-
 .adminSearch input {
-
     flex: 1;
-
     height: 42px;
-
     padding: 0 12px;
-
     background: #111012;
-
     border: 1px solid #363139;
-
     color: white;
-
     outline: none;
 }
 
-
 .adminSearch button {
-
     width: 100px;
-
     border: 0;
-
     background: #694080;
-
     color: white;
 }
 
-
 .adminResults {
-
     margin-top: 25px;
-
     max-width: 700px;
 }
 
-
 .adminPlayer {
-
     padding: 17px;
-
     margin-bottom: 8px;
-
     background: #111012;
-
     border: 1px solid #2d2830;
-
     cursor: pointer;
 }
 
-
 .adminPlayer:hover {
-
     border-color: #694080;
 }
 
-
 .adminPlayerName {
-
     font-size: 15px;
 }
 
-
 .adminPlayerId {
-
     color: #666;
-
     font-size: 10px;
-
     margin-top: 5px;
 }
 
-
 .adminNotice {
-
     max-width: 700px;
-
     margin-top: 45px;
 }
 
-
 .adminNotice textarea {
-
     width: 100%;
-
     height: 100px;
-
     resize: vertical;
-
     padding: 12px;
-
     background: #111012;
-
     border: 1px solid #363139;
-
     color: white;
-
     outline: none;
 }
 
-
 .saveNotice {
-
     margin-top: 10px;
-
     width: 130px;
-
     height: 40px;
-
     border: 0;
-
     background: #694080;
-
     color: white;
 }
 
-
 .adminMessage {
-
     margin-top: 10px;
-
     color: #777;
-
     font-size: 12px;
 }
 
-
 .adminClose {
-
     margin-left: auto;
-
     height: 35px;
-
     padding: 0 15px;
-
     border: 1px solid #39343c;
-
     background: transparent;
-
     color: #aaa;
 }
-
 
 /* CONTEXT MENU */
 
 #gameContext {
-
     position: fixed;
-
     display: none;
-
     width: 150px;
-
     background: #151217;
-
     border: 1px solid #39333d;
-
     z-index: 700;
 }
 
-
 .contextButton {
-
     width: 100%;
-
     height: 40px;
-
     border: 0;
-
     border-bottom: 1px solid #2d2830;
-
     background: transparent;
-
     color: #bbb;
-
     text-align: left;
-
     padding-left: 14px;
 }
 
-
 .contextButton:hover {
-
     background: #211b24;
-
     color: white;
 }
-
 
 @media(max-width:700px) {
 
     .loginBox {
-
         width: calc(100% - 30px);
-
     }
 
     .page,
     .storePageContent,
     .detailsContent {
-
         padding: 30px 20px;
-
     }
 
     .gameTile,
     .storeGame {
-
         width: 100%;
-
     }
 
 }
@@ -1203,9 +741,6 @@ button {
 
 <body>
 
-
-<!-- LOADING -->
-
 <div id="loadingScreen">
 
     <div>
@@ -1214,8 +749,7 @@ button {
             Loading Myte
         </div>
 
-        <div id="loadingText"
-             class="loadingText">
+        <div id="loadingText" class="loadingText">
             Starting...
         </div>
 
@@ -1223,8 +757,6 @@ button {
 
 </div>
 
-
-<!-- LOGIN -->
 
 <div id="loginScreen">
 
@@ -1238,19 +770,15 @@ button {
             Sign in to your account
         </div>
 
-        <div id="loginTitle"
-             class="loginTitle">
+        <div id="loginTitle" class="loginTitle">
             Sign in
         </div>
-
 
         <div id="loginForm">
 
             <div class="inputGroup">
 
-                <label>
-                    Gamertag
-                </label>
+                <label>Gamertag</label>
 
                 <input
                     id="loginUsername"
@@ -1260,12 +788,9 @@ button {
 
             </div>
 
-
             <div class="inputGroup">
 
-                <label>
-                    Password
-                </label>
+                <label>Password</label>
 
                 <input
                     id="loginPassword"
@@ -1275,35 +800,25 @@ button {
 
             </div>
 
-
             <button
                 class="primaryButton"
                 onclick="login()">
-
                 Sign in
-
             </button>
-
 
             <button
                 class="secondaryButton"
                 onclick="showRegister()">
-
                 Create account
-
             </button>
 
         </div>
 
-
-        <div id="registerForm"
-             style="display:none">
+        <div id="registerForm" style="display:none">
 
             <div class="inputGroup">
 
-                <label>
-                    Gamertag
-                </label>
+                <label>Gamertag</label>
 
                 <input
                     id="registerUsername"
@@ -1312,12 +827,9 @@ button {
 
             </div>
 
-
             <div class="inputGroup">
 
-                <label>
-                    Password
-                </label>
+                <label>Password</label>
 
                 <input
                     id="registerPassword"
@@ -1326,12 +838,9 @@ button {
 
             </div>
 
-
             <div class="inputGroup">
 
-                <label>
-                    Confirm password
-                </label>
+                <label>Confirm password</label>
 
                 <input
                     id="registerPasswordConfirm"
@@ -1340,37 +849,26 @@ button {
 
             </div>
 
-
             <button
                 class="primaryButton"
                 onclick="register()">
-
                 Create account
-
             </button>
-
 
             <button
                 class="secondaryButton"
                 onclick="showLogin()">
-
                 Back
-
             </button>
 
         </div>
 
-
-        <div id="loginMessage"
-             class="loginMessage">
-        </div>
+        <div id="loginMessage" class="loginMessage"></div>
 
     </div>
 
 </div>
 
-
-<!-- BAN -->
 
 <div id="banScreen">
 
@@ -1380,20 +878,17 @@ button {
             You have been banned.
         </div>
 
-
         <div class="banRow">
 
             <div class="banLabel">
                 Reason
             </div>
 
-            <div id="banReason"
-                 class="banValue">
+            <div id="banReason" class="banValue">
                 No reason provided.
             </div>
 
         </div>
-
 
         <div class="banRow">
 
@@ -1401,28 +896,22 @@ button {
                 Unbanned
             </div>
 
-            <div id="banTime"
-                 class="banValue">
+            <div id="banTime" class="banValue">
                 Unknown
             </div>
 
         </div>
 
-
         <button
             class="banButton"
             onclick="closeBan()">
-
             Back to sign in
-
         </button>
 
     </div>
 
 </div>
 
-
-<!-- DASHBOARD -->
 
 <div id="dashboard">
 
@@ -1432,22 +921,17 @@ button {
             <span>●</span> Myte
         </div>
 
-
         <div class="navItem">
             Games
         </div>
-
 
         <div
             class="profileTop"
             onclick="openProfile()">
 
-            <div
-                id="topAvatar"
-                class="avatar">
+            <div id="topAvatar" class="avatar">
                 ?
             </div>
-
 
             <div>
 
@@ -1456,7 +940,6 @@ button {
                     class="profileName">
                     Player
                 </div>
-
 
                 <div class="profileStatus">
                     ● Online
@@ -1467,7 +950,6 @@ button {
         </div>
 
     </div>
-
 
     <div class="page">
 
@@ -1480,22 +962,15 @@ button {
 
         </div>
 
-
         <div class="description">
             Your games
         </div>
-
 
         <div class="sectionTitle">
             Games
         </div>
 
-
-        <div
-            id="gamesGrid"
-            class="gamesGrid">
-        </div>
-
+        <div id="gamesGrid" class="gamesGrid"></div>
 
         <div
             id="notice"
@@ -1505,7 +980,6 @@ button {
             <div class="noticeTitle">
                 Message
             </div>
-
 
             <div
                 id="noticeText"
@@ -1519,8 +993,6 @@ button {
 </div>
 
 
-<!-- STORE -->
-
 <div id="storePage">
 
     <div class="storeTopBar">
@@ -1528,11 +1000,8 @@ button {
         <button
             class="storeBack"
             onclick="closeStore()">
-
             ← Back
-
         </button>
-
 
         <div class="storePageTitle">
             Game Store
@@ -1540,16 +1009,13 @@ button {
 
     </div>
 
-
     <div class="storePageContent">
 
         <div class="sectionTitle">
             Games
         </div>
 
-
         <div class="storeGames">
-
 
             <div
                 class="storeGame"
@@ -1565,7 +1031,6 @@ button {
 
             </div>
 
-
             <div
                 class="storeGame"
                 onclick="openScraftDetails()">
@@ -1580,15 +1045,12 @@ button {
 
             </div>
 
-
         </div>
 
     </div>
 
 </div>
 
-
-<!-- GAME DETAILS -->
 
 <div id="gameDetailsPage">
 
@@ -1597,18 +1059,14 @@ button {
         <button
             class="detailsBack"
             onclick="closeDetails()">
-
             ← Back
-
         </button>
-
 
         <div class="storePageTitle">
             Game Store
         </div>
 
     </div>
-
 
     <div class="detailsContent">
 
@@ -1618,29 +1076,23 @@ button {
             GAME
         </div>
 
-
         <div
             id="detailsTitle"
             class="detailsTitle">
             Game
         </div>
 
-
         <div
             id="detailsDescription"
             class="detailsDescription">
         </div>
 
-
         <button
             id="downloadButton"
             class="downloadButton"
             onclick="downloadCurrentGame()">
-
             Download
-
         </button>
-
 
         <div
             id="downloadArea"
@@ -1649,11 +1101,8 @@ button {
             <div
                 id="downloadText"
                 class="downloadText">
-
                 Downloading...
-
             </div>
-
 
             <div class="progressBackground">
 
@@ -1671,105 +1120,73 @@ button {
 </div>
 
 
-<!-- PROFILE -->
-
 <div id="profilePanel">
 
     <button
         class="closeProfile"
         onclick="closeProfile()">
-
         ×
-
     </button>
-
 
     <div class="profileTitle">
         Profile
     </div>
 
-
     <div
         id="largeAvatar"
         class="largeAvatar">
-
         ?
-
     </div>
-
 
     <div
         id="panelGamertag"
         class="panelGamertag">
-
         Player
-
     </div>
-
 
     <div
         id="panelUserId"
         class="panelUserId">
-
         User ID
-
     </div>
 
-
     <div class="divider"></div>
-
 
     <div style="color:#777;font-size:10px">
         STATUS
     </div>
 
-
     <div
         style="color:#55c76a;font-size:13px;margin-top:7px">
-
         ● Online
-
     </div>
 
-
-    <div
-        id="adminArea"
-        style="display:none">
+    <div id="adminArea" style="display:none">
 
         <div class="divider"></div>
-
 
         <div style="color:#777;font-size:10px">
             ADMIN
         </div>
 
-
         <button
             class="adminButton"
             onclick="openAdminPanel()">
-
             Open Admin Panel
-
         </button>
 
     </div>
 
-
     <div class="divider"></div>
-
 
     <button
         class="logoutButton"
         onclick="logout()">
-
         Sign out
-
     </button>
 
 </div>
 
-
-<!-- ADMIN -->
 
 <div id="adminPanel">
 
@@ -1779,24 +1196,19 @@ button {
             Myte Admin
         </div>
 
-
         <button
             class="adminClose"
             onclick="closeAdminPanel()">
-
             Close
-
         </button>
 
     </div>
-
 
     <div class="adminContent">
 
         <div class="sectionTitle">
             Players
         </div>
-
 
         <div class="adminSearch">
 
@@ -1805,19 +1217,16 @@ button {
                 placeholder="Search by gamertag or user ID"
             >
 
-
             <button onclick="adminSearch()">
                 Search
             </button>
 
         </div>
 
-
         <div
             id="adminResults"
             class="adminResults">
         </div>
-
 
         <div class="adminNotice">
 
@@ -1825,21 +1234,16 @@ button {
                 Site Message
             </div>
 
-
             <textarea
                 id="adminNoticeInput"
                 placeholder="Enter the message shown on Myte...">
             </textarea>
 
-
             <button
                 class="saveNotice"
                 onclick="saveNotice()">
-
                 Save Message
-
             </button>
-
 
             <div
                 id="adminMessage"
@@ -1853,36 +1257,24 @@ button {
 </div>
 
 
-<!-- HOLD MENU -->
-
 <div id="gameContext">
 
     <button
         class="contextButton"
         onclick="deleteSelectedGame()">
-
         Delete
-
     </button>
-
 
     <button
         class="contextButton"
         onclick="closeGameContext()">
-
         Cancel
-
     </button>
 
 </div>
 
 
 <script>
-
-
-/*
-    MYTE SETTINGS
-*/
 
 const TITLE_ID = "16F240";
 
@@ -1891,11 +1283,6 @@ const OWNED_GAMES_KEY = "OwnedGames";
 const ADMIN_KEY = "Admin";
 
 const NOTICE_KEY = "Notice";
-
-
-/*
-    STATE
-*/
 
 let currentUsername = "";
 
@@ -1913,17 +1300,10 @@ let holdTimer = null;
 
 let selectedGame = null;
 
+let playFabReady = false;
 
-/*
-    PLAYFAB
-*/
+let playFabLoadFailed = false;
 
-PlayFab.settings.titleId = TITLE_ID;
-
-
-/*
-    ELEMENTS
-*/
 
 const loadingScreen =
     document.getElementById("loadingScreen");
@@ -1947,9 +1327,66 @@ const gameDetailsPage =
     document.getElementById("gameDetailsPage");
 
 
-/*
-    LOGIN MESSAGE
-*/
+function playFabLoaded() {
+
+    playFabReady = true;
+
+    console.log("PlayFab SDK loaded.");
+
+    startMyte();
+
+}
+
+
+function playFabFailed() {
+
+    playFabLoadFailed = true;
+
+    console.error("PlayFab SDK failed to load.");
+
+    loadingScreen.style.display = "none";
+
+    loginScreen.style.display = "flex";
+
+    message(
+        "Unable to load PlayFab. Check your internet connection and refresh.",
+        true
+    );
+
+}
+
+
+function startMyte() {
+
+    if (!playFabReady) {
+        return;
+    }
+
+    if (
+        typeof PlayFab === "undefined" ||
+        typeof PlayFabClientSDK === "undefined"
+    ) {
+
+        playFabFailed();
+
+        return;
+    }
+
+    PlayFab.settings.titleId = TITLE_ID;
+
+    loadingScreen.style.display = "flex";
+
+    loadingText.textContent =
+        "Checking saved account...";
+
+    setTimeout(function() {
+
+        restoreSession();
+
+    }, 300);
+
+}
+
 
 function message(text, error = false) {
 
@@ -1962,12 +1399,9 @@ function message(text, error = false) {
         error
         ? "loginMessage error"
         : "loginMessage";
+
 }
 
-
-/*
-    SHOW LOGIN
-*/
 
 function showLogin() {
 
@@ -1981,12 +1415,9 @@ function showLogin() {
         .textContent = "Sign in";
 
     message("");
+
 }
 
-
-/*
-    SHOW REGISTER
-*/
 
 function showRegister() {
 
@@ -2000,31 +1431,24 @@ function showRegister() {
         .textContent = "Create account";
 
     message("");
+
 }
 
-
-/*
-    REGISTER
-*/
 
 function register() {
 
     const username =
-        document
-            .getElementById("registerUsername")
+        document.getElementById("registerUsername")
             .value
             .trim();
 
     const password =
-        document
-            .getElementById("registerPassword")
+        document.getElementById("registerPassword")
             .value;
 
     const confirm =
-        document
-            .getElementById("registerPasswordConfirm")
+        document.getElementById("registerPasswordConfirm")
             .value;
-
 
     if (!username) {
 
@@ -2034,8 +1458,8 @@ function register() {
         );
 
         return;
-    }
 
+    }
 
     if (password.length < 6) {
 
@@ -2045,8 +1469,8 @@ function register() {
         );
 
         return;
-    }
 
+    }
 
     if (password !== confirm) {
 
@@ -2056,28 +1480,19 @@ function register() {
         );
 
         return;
+
     }
 
-
-    message(
-        "Creating account..."
-    );
-
+    message("Creating account...");
 
     PlayFabClientSDK.RegisterPlayFabUser(
 
         {
-
             TitleId: TITLE_ID,
-
             Username: username,
-
             Password: password,
-
             DisplayName: username,
-
             RequireBothUsernameAndEmail: false
-
         },
 
         function(result, error) {
@@ -2087,16 +1502,14 @@ function register() {
                 handleError(error);
 
                 return;
-            }
 
+            }
 
             currentUsername =
                 username;
 
-
             currentPlayFabId =
                 result.data.PlayFabId;
-
 
             createDefaultPlayerData(
 
@@ -2123,23 +1536,16 @@ function register() {
 }
 
 
-/*
-    LOGIN
-*/
-
 function login() {
 
     const username =
-        document
-            .getElementById("loginUsername")
+        document.getElementById("loginUsername")
             .value
             .trim();
 
     const password =
-        document
-            .getElementById("loginPassword")
+        document.getElementById("loginPassword")
             .value;
-
 
     if (!username || !password) {
 
@@ -2149,22 +1555,16 @@ function login() {
         );
 
         return;
+
     }
 
-
-    message(
-        "Signing in..."
-    );
-
+    message("Signing in...");
 
     PlayFabClientSDK.LoginWithPlayFab(
 
         {
-
             TitleId: TITLE_ID,
-
             Username: username,
-
             Password: password,
 
             InfoRequestParameters: {
@@ -2174,13 +1574,9 @@ function login() {
                 GetUserData: true,
 
                 UserDataKeys: [
-
                     OWNED_GAMES_KEY,
-
                     ADMIN_KEY,
-
                     NOTICE_KEY
-
                 ]
 
             }
@@ -2194,17 +1590,15 @@ function login() {
                 handleError(error);
 
                 return;
-            }
 
+            }
 
             currentPlayFabId =
                 result.data.PlayFabId;
 
-
             const profile =
                 result.data.InfoResultPayload &&
                 result.data.InfoResultPayload.PlayerProfile;
-
 
             currentUsername =
                 profile &&
@@ -2212,11 +1606,7 @@ function login() {
                 ? profile.DisplayName
                 : username;
 
-
-            readLoginData(
-                result.data
-            );
-
+            readLoginData(result.data);
 
             enterDashboard();
 
@@ -2227,30 +1617,21 @@ function login() {
 }
 
 
-/*
-    READ LOGIN DATA
-*/
-
 function readLoginData(data) {
 
     ownedGames = [];
 
     isAdmin = false;
 
-
     const info =
         data.InfoResultPayload;
 
-
     if (!info) {
-
         return;
     }
 
-
     const userData =
         info.UserData || {};
-
 
     if (
         userData[OWNED_GAMES_KEY] &&
@@ -2264,22 +1645,17 @@ function readLoginData(data) {
                     userData[OWNED_GAMES_KEY].Value
                 );
 
-
             if (Array.isArray(games)) {
-
                 ownedGames = games;
-
             }
 
-        }
-        catch {
+        } catch {
 
             ownedGames = [];
 
         }
 
     }
-
 
     if (
         userData[ADMIN_KEY] &&
@@ -2292,7 +1668,6 @@ function readLoginData(data) {
                 .toLowerCase() === "true";
 
     }
-
 
     if (
         userData[NOTICE_KEY] &&
@@ -2307,10 +1682,6 @@ function readLoginData(data) {
 
 }
 
-
-/*
-    CREATE DEFAULT DATA
-*/
 
 function createDefaultPlayerData(callback) {
 
@@ -2332,16 +1703,6 @@ function createDefaultPlayerData(callback) {
 
         function(result, error) {
 
-            if (error) {
-
-                console.log(
-                    "Could not create default data:",
-                    error
-                );
-
-            }
-
-
             callback();
 
         }
@@ -2351,35 +1712,21 @@ function createDefaultPlayerData(callback) {
 }
 
 
-/*
-    LOAD PLAYER DATA
-*/
-
 function loadPlayerData(callback) {
 
     PlayFabClientSDK.GetUserData(
 
         {
-
             Keys: [
-
                 OWNED_GAMES_KEY,
-
                 ADMIN_KEY,
-
                 NOTICE_KEY
-
             ]
-
         },
 
         function(result, error) {
 
             if (error) {
-
-                console.log(
-                    error
-                );
 
                 ownedGames = [];
 
@@ -2388,17 +1735,15 @@ function loadPlayerData(callback) {
                 callback();
 
                 return;
-            }
 
+            }
 
             ownedGames = [];
 
             isAdmin = false;
 
-
             const data =
                 result.data.Data || {};
-
 
             if (
                 data[OWNED_GAMES_KEY] &&
@@ -2412,23 +1757,19 @@ function loadPlayerData(callback) {
                             data[OWNED_GAMES_KEY].Value
                         );
 
-
                     if (Array.isArray(games)) {
 
-                        ownedGames =
-                            games;
+                        ownedGames = games;
 
                     }
 
-                }
-                catch {
+                } catch {
 
                     ownedGames = [];
 
                 }
 
             }
-
 
             if (
                 data[ADMIN_KEY] &&
@@ -2442,7 +1783,6 @@ function loadPlayerData(callback) {
 
             }
 
-
             if (
                 data[NOTICE_KEY] &&
                 data[NOTICE_KEY].Value
@@ -2454,7 +1794,6 @@ function loadPlayerData(callback) {
 
             }
 
-
             callback();
 
         }
@@ -2463,10 +1802,6 @@ function loadPlayerData(callback) {
 
 }
 
-
-/*
-    SAVE OWNED GAMES
-*/
 
 function saveOwnedGames(callback) {
 
@@ -2477,9 +1812,7 @@ function saveOwnedGames(callback) {
             Data: {
 
                 [OWNED_GAMES_KEY]:
-                    JSON.stringify(
-                        ownedGames
-                    )
+                    JSON.stringify(ownedGames)
 
             }
 
@@ -2487,9 +1820,7 @@ function saveOwnedGames(callback) {
 
         function(result, error) {
 
-            callback(
-                !error
-            );
+            callback(!error);
 
         }
 
@@ -2498,30 +1829,19 @@ function saveOwnedGames(callback) {
 }
 
 
-/*
-    ENTER DASHBOARD
-*/
-
 function enterDashboard() {
 
-    loadingScreen.style.display =
-        "none";
+    loadingScreen.style.display = "none";
 
-    loginScreen.style.display =
-        "none";
+    loginScreen.style.display = "none";
 
-    banScreen.style.display =
-        "none";
+    banScreen.style.display = "none";
 
-    storePage.style.display =
-        "none";
+    storePage.style.display = "none";
 
-    gameDetailsPage.style.display =
-        "none";
+    gameDetailsPage.style.display = "none";
 
-    dashboard.style.display =
-        "block";
-
+    dashboard.style.display = "block";
 
     updateProfile();
 
@@ -2530,10 +1850,6 @@ function enterDashboard() {
 }
 
 
-/*
-    PROFILE
-*/
-
 function updateProfile() {
 
     document.getElementById(
@@ -2541,18 +1857,15 @@ function updateProfile() {
     ).textContent =
         currentUsername;
 
-
     document.getElementById(
         "welcomeName"
     ).textContent =
         currentUsername;
 
-
     document.getElementById(
         "panelGamertag"
     ).textContent =
         currentUsername;
-
 
     document.getElementById(
         "panelUserId"
@@ -2560,24 +1873,20 @@ function updateProfile() {
         "User ID: " +
         currentPlayFabId;
 
-
     const letter =
         currentUsername
             .charAt(0)
             .toUpperCase();
-
 
     document.getElementById(
         "topAvatar"
     ).textContent =
         letter;
 
-
     document.getElementById(
         "largeAvatar"
     ).textContent =
         letter;
-
 
     document.getElementById(
         "adminArea"
@@ -2589,108 +1898,64 @@ function updateProfile() {
 }
 
 
-/*
-    RENDER GAMES
-*/
-
 function renderGames() {
 
     const grid =
-        document.getElementById(
-            "gamesGrid"
-        );
-
+        document.getElementById("gamesGrid");
 
     grid.innerHTML = "";
 
-
-    for (
-        const game of ownedGames
-    ) {
+    for (const game of ownedGames) {
 
         if (game === "snake") {
 
             grid.appendChild(
-
                 createGameTile(
-
                     "Snake",
-
                     "Classic snake game",
-
                     "SNAKE",
-
                     "snake"
-
                 )
-
             );
 
         }
 
-
         if (game === "scraft") {
 
             grid.appendChild(
-
                 createGameTile(
-
                     "Scraft",
-
                     "A fun block-building game",
-
                     "SCRAFT",
-
                     "scraft"
-
                 )
-
             );
 
         }
 
     }
 
-
     const store =
         createGameTile(
-
             "Game Store",
-
             "Browse games",
-
             "STORE",
-
             "store"
-
         );
-
 
     store.onclick =
         function() {
-
             openStore();
-
         };
 
-
     store.onmousedown = null;
-
     store.onmouseup = null;
-
     store.onmouseleave = null;
 
-
-    grid.appendChild(
-        store
-    );
+    grid.appendChild(store);
 
 }
 
-
-/*
-    CREATE GAME TILE
-*/
 
 function createGameTile(
     name,
@@ -2700,29 +1965,23 @@ function createGameTile(
 ) {
 
     const tile =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     tile.className =
         "gameTile";
 
-
     tile.innerHTML =
-
         '<div class="gameIcon">' +
-            icon +
+        icon +
         '</div>' +
 
         '<div class="gameName">' +
-            name +
+        name +
         '</div>' +
 
         '<div class="gameDescription">' +
-            description +
+        description +
         '</div>';
-
 
     if (gameId === "snake") {
 
@@ -2740,7 +1999,6 @@ function createGameTile(
 
     }
 
-
     if (gameId === "scraft") {
 
         tile.onclick =
@@ -2757,21 +2015,15 @@ function createGameTile(
 
     }
 
-
     setupHold(
         tile,
         gameId
     );
 
-
     return tile;
 
 }
 
-
-/*
-    HOLD MENU
-*/
 
 function setupHold(
     element,
@@ -2783,15 +2035,11 @@ function setupHold(
         function(event) {
 
             if (gameId === "store") {
-
                 return;
-
             }
-
 
             selectedGame =
                 gameId;
-
 
             holdTimer =
                 setTimeout(
@@ -2809,30 +2057,23 @@ function setupHold(
         }
     );
 
-
     element.addEventListener(
         "mouseup",
         function() {
 
-            clearTimeout(
-                holdTimer
-            );
+            clearTimeout(holdTimer);
 
         }
     );
-
 
     element.addEventListener(
         "mouseleave",
         function() {
 
-            clearTimeout(
-                holdTimer
-            );
+            clearTimeout(holdTimer);
 
         }
     );
-
 
     element.addEventListener(
         "contextmenu",
@@ -2840,12 +2081,10 @@ function setupHold(
 
             event.preventDefault();
 
-
             if (gameId !== "store") {
 
                 selectedGame =
                     gameId;
-
 
                 showGameContext(
                     event.clientX,
@@ -2860,28 +2099,18 @@ function setupHold(
 }
 
 
-/*
-    CONTEXT MENU
-*/
-
-function showGameContext(
-    x,
-    y
-) {
+function showGameContext(x, y) {
 
     const menu =
         document.getElementById(
             "gameContext"
         );
 
-
     menu.style.left =
         x + "px";
 
-
     menu.style.top =
         y + "px";
-
 
     menu.style.display =
         "block";
@@ -2896,7 +2125,6 @@ function closeGameContext() {
     ).style.display =
         "none";
 
-
     selectedGame =
         null;
 
@@ -2906,33 +2134,24 @@ function closeGameContext() {
 function deleteSelectedGame() {
 
     if (!selectedGame) {
-
         return;
-
     }
-
 
     ownedGames =
         ownedGames.filter(
-
             game =>
                 game !== selectedGame
-
         );
-
 
     saveOwnedGames(
         function(success) {
 
             if (success) {
-
                 renderGames();
-
             }
 
         }
     );
-
 
     closeGameContext();
 
@@ -2948,7 +2167,6 @@ document.addEventListener(
                 "gameContext"
             );
 
-
         if (
             menu.style.display === "block" &&
             !menu.contains(event.target)
@@ -2961,10 +2179,6 @@ document.addEventListener(
     }
 );
 
-
-/*
-    STORE
-*/
 
 function openStore() {
 
@@ -2988,22 +2202,13 @@ function closeStore() {
 }
 
 
-/*
-    GAME DETAILS
-*/
-
 function openSnakeDetails() {
 
     openGameDetails(
-
         "snake",
-
         "SNAKE",
-
         "Snake",
-
         "A simple classic snake game where you control a growing snake, collect food, and try to get the highest score without hitting yourself or the edge of the screen."
-
     );
 
 }
@@ -3012,15 +2217,10 @@ function openSnakeDetails() {
 function openScraftDetails() {
 
     openGameDetails(
-
         "scraft",
-
         "SCRAFT",
-
         "Scraft",
-
         "It's like Minecraft, but bad. A really fun game that you can play."
-
     );
 
 }
@@ -3036,40 +2236,32 @@ function openGameDetails(
     currentDetailsGame =
         id;
 
-
     document.getElementById(
         "detailsIcon"
     ).textContent =
         icon;
-
 
     document.getElementById(
         "detailsTitle"
     ).textContent =
         name;
 
-
     document.getElementById(
         "detailsDescription"
     ).textContent =
         description;
-
 
     const button =
         document.getElementById(
             "downloadButton"
         );
 
-
     const area =
         document.getElementById(
             "downloadArea"
         );
 
-
-    if (
-        ownedGames.includes(id)
-    ) {
+    if (ownedGames.includes(id)) {
 
         button.textContent =
             "Installed";
@@ -3080,8 +2272,7 @@ function openGameDetails(
         area.style.display =
             "none";
 
-    }
-    else {
+    } else {
 
         button.textContent =
             "Download";
@@ -3093,7 +2284,6 @@ function openGameDetails(
             "none";
 
     }
-
 
     storePage.style.display =
         "none";
@@ -3117,10 +2307,8 @@ function closeDetails() {
 
     }
 
-
     gameDetailsPage.style.display =
         "none";
-
 
     storePage.style.display =
         "block";
@@ -3128,18 +2316,11 @@ function closeDetails() {
 }
 
 
-/*
-    DOWNLOAD
-*/
-
 function downloadCurrentGame() {
 
     if (!currentDetailsGame) {
-
         return;
-
     }
-
 
     if (
         ownedGames.includes(
@@ -3151,54 +2332,43 @@ function downloadCurrentGame() {
 
     }
 
-
     const button =
         document.getElementById(
             "downloadButton"
         );
-
 
     const area =
         document.getElementById(
             "downloadArea"
         );
 
-
     const text =
         document.getElementById(
             "downloadText"
         );
-
 
     const bar =
         document.getElementById(
             "progressBar"
         );
 
-
     button.style.display =
         "none";
-
 
     area.style.display =
         "block";
 
-
     let progress =
         0;
 
-
     downloadTimer =
         setInterval(
-
             function() {
 
                 progress++;
 
-
                 bar.style.width =
                     progress + "%";
-
 
                 text.textContent =
                     "Downloading " +
@@ -3209,23 +2379,17 @@ function downloadCurrentGame() {
                     progress +
                     "%";
 
-
-                if (
-                    progress >= 100
-                ) {
+                if (progress >= 100) {
 
                     clearInterval(
                         downloadTimer
                     );
 
-
                     downloadTimer =
                         null;
 
-
                     text.textContent =
                         "Installing...";
-
 
                     if (
                         !ownedGames.includes(
@@ -3239,9 +2403,7 @@ function downloadCurrentGame() {
 
                     }
 
-
                     saveOwnedGames(
-
                         function(success) {
 
                             if (!success) {
@@ -3253,16 +2415,12 @@ function downloadCurrentGame() {
 
                             }
 
-
                             text.textContent =
                                 "Installed.";
 
-
                             renderGames();
 
-
                             setTimeout(
-
                                 function() {
 
                                     gameDetailsPage
@@ -3270,28 +2428,22 @@ function downloadCurrentGame() {
                                         .display =
                                         "none";
 
-
                                     dashboard
                                         .style
                                         .display =
                                         "block";
 
                                 },
-
                                 700
-
                             );
 
                         }
-
                     );
 
                 }
 
             },
-
             100
-
         );
 
 }
@@ -3307,17 +2459,11 @@ function capitalize(text) {
 }
 
 
-/*
-    PROFILE PANEL
-*/
-
 function openProfile() {
 
     document.getElementById(
         "profilePanel"
-    ).classList.add(
-        "open"
-    );
+    ).classList.add("open");
 
 }
 
@@ -3326,16 +2472,10 @@ function closeProfile() {
 
     document.getElementById(
         "profilePanel"
-    ).classList.remove(
-        "open"
-    );
+    ).classList.remove("open");
 
 }
 
-
-/*
-    NOTICE
-*/
 
 function showNotice(text) {
 
@@ -3344,12 +2484,10 @@ function showNotice(text) {
             "notice"
         );
 
-
     document.getElementById(
         "noticeText"
     ).textContent =
         text;
-
 
     notice.style.display =
         text
@@ -3359,27 +2497,18 @@ function showNotice(text) {
 }
 
 
-/*
-    ADMIN
-*/
-
 function openAdminPanel() {
 
     if (!isAdmin) {
-
         return;
-
     }
 
-
     closeProfile();
-
 
     document.getElementById(
         "adminPanel"
     ).style.display =
         "block";
-
 
     loadAdminNotice();
 
@@ -3399,23 +2528,16 @@ function closeAdminPanel() {
 function adminSearch() {
 
     const query =
-        document
-            .getElementById(
-                "adminSearchInput"
-            )
-            .value
-            .trim();
-
+        document.getElementById(
+            "adminSearchInput"
+        ).value.trim();
 
     const results =
         document.getElementById(
             "adminResults"
         );
 
-
-    results.innerHTML =
-        "";
-
+    results.innerHTML = "";
 
     if (!query) {
 
@@ -3428,10 +2550,8 @@ function adminSearch() {
 
     }
 
-
     const BACKEND_URL =
         window.MYTE_BACKEND_URL || "";
-
 
     if (!BACKEND_URL) {
 
@@ -3444,19 +2564,13 @@ function adminSearch() {
 
     }
 
-
     fetch(
-
         BACKEND_URL +
         "/admin/search?query=" +
         encodeURIComponent(query),
-
         {
-
             credentials: "include"
-
         }
-
     )
 
     .then(
@@ -3465,7 +2579,6 @@ function adminSearch() {
     )
 
     .then(
-
         data => {
 
             if (!data.players) {
@@ -3479,23 +2592,15 @@ function adminSearch() {
 
             }
 
-
-            for (
-                const player of data.players
-            ) {
+            for (const player of data.players) {
 
                 const element =
-                    document.createElement(
-                        "div"
-                    );
-
+                    document.createElement("div");
 
                 element.className =
                     "adminPlayer";
 
-
                 element.innerHTML =
-
                     '<div class="adminPlayerName">' +
                     escapeHtml(
                         player.displayName ||
@@ -3510,7 +2615,6 @@ function adminSearch() {
                     ) +
                     '</div>';
 
-
                 element.onclick =
                     function() {
 
@@ -3520,7 +2624,6 @@ function adminSearch() {
 
                     };
 
-
                 results.appendChild(
                     element
                 );
@@ -3528,11 +2631,9 @@ function adminSearch() {
             }
 
         }
-
     )
 
     .catch(
-
         function() {
 
             results.innerHTML =
@@ -3541,69 +2642,44 @@ function adminSearch() {
                 '</div>';
 
         }
-
     );
 
 }
 
 
-function adminPlayerSelected(
-    player
-) {
+function adminPlayerSelected(player) {
 
     const BACKEND_URL =
         window.MYTE_BACKEND_URL || "";
 
-
     if (!BACKEND_URL) {
-
         return;
-
     }
-
 
     const reason =
-        prompt(
-            "Ban reason:"
-        );
-
+        prompt("Ban reason:");
 
     if (reason === null) {
-
         return;
-
     }
-
 
     const duration =
-        prompt(
-            "Ban duration in minutes:"
-        );
-
+        prompt("Ban duration in minutes:");
 
     if (duration === null) {
-
         return;
-
     }
 
-
     fetch(
-
-        BACKEND_URL +
-        "/admin/ban",
-
+        BACKEND_URL + "/admin/ban",
         {
-
             method: "POST",
 
             credentials: "include",
 
             headers: {
-
                 "Content-Type":
                     "application/json"
-
             },
 
             body:
@@ -3619,9 +2695,7 @@ function adminPlayerSelected(
                         Number(duration)
 
                 })
-
         }
-
     )
 
     .then(
@@ -3630,7 +2704,6 @@ function adminPlayerSelected(
     )
 
     .then(
-
         data => {
 
             if (data.success) {
@@ -3639,8 +2712,7 @@ function adminPlayerSelected(
                     "Player banned."
                 );
 
-            }
-            else {
+            } else {
 
                 alert(
                     data.message ||
@@ -3650,11 +2722,9 @@ function adminPlayerSelected(
             }
 
         }
-
     )
 
     .catch(
-
         function() {
 
             alert(
@@ -3662,36 +2732,25 @@ function adminPlayerSelected(
             );
 
         }
-
     );
 
 }
 
 
-/*
-    ADMIN NOTICE
-*/
-
 function loadAdminNotice() {
 
     PlayFabClientSDK.GetTitleData(
-
         {
-
             Keys: [
                 NOTICE_KEY
             ]
-
         },
 
         function(result, error) {
 
             if (error) {
-
                 return;
-
             }
-
 
             const value =
                 result.data.Data &&
@@ -3699,14 +2758,12 @@ function loadAdminNotice() {
                     NOTICE_KEY
                 ];
 
-
             document.getElementById(
                 "adminNoticeInput"
             ).value =
                 value || "";
 
         }
-
     );
 
 }
@@ -3715,17 +2772,12 @@ function loadAdminNotice() {
 function saveNotice() {
 
     const text =
-        document
-            .getElementById(
-                "adminNoticeInput"
-            )
-            .value
-            .trim();
-
+        document.getElementById(
+            "adminNoticeInput"
+        ).value.trim();
 
     const BACKEND_URL =
         window.MYTE_BACKEND_URL || "";
-
 
     if (!BACKEND_URL) {
 
@@ -3738,35 +2790,23 @@ function saveNotice() {
 
     }
 
-
     fetch(
-
-        BACKEND_URL +
-        "/admin/notice",
-
+        BACKEND_URL + "/admin/notice",
         {
-
             method: "POST",
 
             credentials: "include",
 
             headers: {
-
                 "Content-Type":
                     "application/json"
-
             },
 
             body:
                 JSON.stringify({
-
-                    message:
-                        text
-
+                    message: text
                 })
-
         }
-
     )
 
     .then(
@@ -3775,23 +2815,18 @@ function saveNotice() {
     )
 
     .then(
-
         data => {
 
             if (data.success) {
 
-                showNotice(
-                    text
-                );
-
+                showNotice(text);
 
                 document.getElementById(
                     "adminMessage"
                 ).textContent =
                     "Message saved.";
 
-            }
-            else {
+            } else {
 
                 document.getElementById(
                     "adminMessage"
@@ -3802,11 +2837,9 @@ function saveNotice() {
             }
 
         }
-
     )
 
     .catch(
-
         function() {
 
             document.getElementById(
@@ -3815,43 +2848,25 @@ function saveNotice() {
                 "Admin server unavailable.";
 
         }
-
     );
 
 }
 
 
-/*
-    ESCAPE HTML
-*/
-
 function escapeHtml(text) {
 
     const div =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     div.textContent =
         text;
-
 
     return div.innerHTML;
 
 }
 
 
-/*
-    LOGOUT
-*/
-
 function logout() {
-
-    /*
-        This is the ONLY place where the
-        cached PlayFab credentials are cleared.
-    */
 
     if (
         typeof PlayFabClientSDK
@@ -3864,53 +2879,36 @@ function logout() {
 
     }
 
+    currentUsername = "";
 
-    currentUsername =
-        "";
+    currentPlayFabId = "";
 
-    currentPlayFabId =
-        "";
+    ownedGames = [];
 
-    ownedGames =
-        [];
-
-    isAdmin =
-        false;
-
+    isAdmin = false;
 
     closeProfile();
-
 
     dashboard.style.display =
         "none";
 
-
     storePage.style.display =
         "none";
-
 
     gameDetailsPage.style.display =
         "none";
 
-
     loginScreen.style.display =
         "flex";
 
-
     document.getElementById(
         "loginPassword"
-    ).value =
-        "";
-
+    ).value = "";
 
     showLogin();
 
 }
 
-
-/*
-    BAN
-*/
 
 function showBan(error) {
 
@@ -3919,7 +2917,6 @@ function showBan(error) {
 
     let unban =
         "Unknown";
-
 
     if (error.errorDetails) {
 
@@ -3930,18 +2927,12 @@ function showBan(error) {
             const lower =
                 key.toLowerCase();
 
-
             let value =
                 error.errorDetails[key];
 
-
             if (Array.isArray(value)) {
-
-                value =
-                    value[0];
-
+                value = value[0];
             }
-
 
             if (
                 lower.includes("reason") &&
@@ -3953,37 +2944,19 @@ function showBan(error) {
 
             }
 
-
             if (
                 (
-                    lower.includes(
-                        "expiration"
-                    ) ||
-
-                    lower.includes(
-                        "expires"
-                    ) ||
-
-                    lower.includes(
-                        "unban"
-                    )
-
+                    lower.includes("expiration") ||
+                    lower.includes("expires") ||
+                    lower.includes("unban")
                 ) &&
-
                 value
             ) {
 
                 const date =
-                    new Date(
-                        value
-                    );
+                    new Date(value);
 
-
-                if (
-                    !isNaN(
-                        date.getTime()
-                    )
-                ) {
+                if (!isNaN(date.getTime())) {
 
                     unban =
                         date.toLocaleString();
@@ -3996,26 +2969,21 @@ function showBan(error) {
 
     }
 
-
     document.getElementById(
         "banReason"
     ).textContent =
         reason;
-
 
     document.getElementById(
         "banTime"
     ).textContent =
         unban;
 
-
     loginScreen.style.display =
         "none";
 
-
     dashboard.style.display =
         "none";
-
 
     banScreen.style.display =
         "flex";
@@ -4028,19 +2996,13 @@ function closeBan() {
     banScreen.style.display =
         "none";
 
-
     loginScreen.style.display =
         "flex";
-
 
     showLogin();
 
 }
 
-
-/*
-    ERROR HANDLER
-*/
 
 function handleError(error) {
 
@@ -4049,61 +3011,31 @@ function handleError(error) {
         error
     );
 
-
     const errorText =
         JSON.stringify(
             error
         ).toLowerCase();
 
-
     if (
-        errorText.includes(
-            "banned"
-        ) ||
-
-        errorText.includes(
-            "ban"
-        )
+        errorText.includes("banned")
     ) {
 
-        showBan(
-            error
-        );
+        showBan(error);
 
         return;
 
     }
 
-
     message(
-
         error.errorMessage ||
         "Unable to sign in.",
-
         true
-
     );
 
 }
 
 
-/*
-    RESTORE EXISTING SESSION
-*/
-
 function restoreSession() {
-
-    /*
-        The JavaScript SDK keeps the session
-        ticket from the successful login.
-
-        We test whether the SDK still has
-        usable authentication information by
-        making an authenticated client request.
-
-        We DO NOT save the password.
-    */
-
 
     try {
 
@@ -4119,10 +3051,8 @@ function restoreSession() {
 
         }
 
-
         loadingText.textContent =
             "Checking saved account...";
-
 
         PlayFabClientSDK.GetAccountInfo(
 
@@ -4132,14 +3062,9 @@ function restoreSession() {
 
                 if (error) {
 
-                    /*
-                        No usable session.
-                    */
-
                     console.log(
                         "No saved PlayFab session."
                     );
-
 
                     showLoginAfterRestore();
 
@@ -4147,32 +3072,21 @@ function restoreSession() {
 
                 }
 
-
-                /*
-                    Session is valid.
-                */
-
                 currentPlayFabId =
                     result.data.PlayFabId;
 
-
                 currentUsername =
-                    result.data.Username ||
-                    "";
-
+                    result.data.Username || "";
 
                 loadingText.textContent =
                     "Restoring account...";
 
-
                 loadPlayerData(
-
                     function() {
 
                         enterDashboard();
 
                     }
-
                 );
 
             }
@@ -4182,11 +3096,10 @@ function restoreSession() {
     }
     catch (error) {
 
-        console.log(
+        console.error(
             "Session restore failed:",
             error
         );
-
 
         showLoginAfterRestore();
 
@@ -4195,28 +3108,18 @@ function restoreSession() {
 }
 
 
-/*
-    SHOW LOGIN AFTER RESTORE
-*/
-
 function showLoginAfterRestore() {
 
     loadingScreen.style.display =
         "none";
 
-
     loginScreen.style.display =
         "flex";
-
 
     showLogin();
 
 }
 
-
-/*
-    STARTUP
-*/
 
 window.addEventListener(
     "load",
@@ -4225,68 +3128,23 @@ window.addEventListener(
         loadingScreen.style.display =
             "flex";
 
-
         loadingText.textContent =
-            "Starting Myte...";
-
-
-        /*
-            Give the PlayFab script a moment
-            to finish loading.
-        */
+            "Loading Myte...";
 
         setTimeout(
-
             function() {
 
-                if (
-                    typeof PlayFab ===
-                    "undefined" ||
+                if (!playFabReady) {
 
-                    typeof PlayFabClientSDK ===
-                    "undefined"
-                ) {
-
-                    loadingScreen.style.display =
-                        "none";
-
-
-                    loginScreen.style.display =
-                        "flex";
-
-
-                    message(
-
-                        "PlayFab could not be loaded.",
-
-                        true
-
-                    );
-
-
-                    return;
+                    playFabFailed();
 
                 }
 
-
-                PlayFab.settings.titleId =
-                    TITLE_ID;
-
-
-                /*
-                    THIS is the important part.
-                */
-
-                restoreSession();
-
             },
-
-            500
-
+            10000
         );
 
     }
-
 );
 
 </script>
