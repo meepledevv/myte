@@ -1,57 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Myte</title>
+
+<script
+    type="text/javascript"
+    src="https://download.playfab.com/PlayFabClientApi.js">
+</script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: #080709;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    overflow: hidden;
+}
+
+button,
+input,
+textarea {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* LOADING */
+
+#loadingScreen {
+    position: fixed;
+    inset: 0;
+    background: #080709;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loadingBox {
+    width: 360px;
+    text-align: center;
+}
+
+.loadingTitle {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.loadingText {
+    color: #777;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.loadingRetry {
+    display: none;
+    margin-top: 18px;
+    padding: 10px 20px;
+    border: 0;
+    background: #694080;
+    color: white;
+}
+
+
+/* LOGIN */
+
+#loginScreen {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #080709;
+}
+
+.loginBox {
+    width: 390px;
+    padding: 38px;
+    background: #111012;
+    border: 1px solid #28242a;
+}
+
+.logo {
+    font-size: 34px;
+    margin-bottom: 7px;
+}
+
+.logo span,
+.smallLogo span {
+    color: #694080;
+}
+
+.subtitle {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 32px;
+}
+
+.loginTitle {
+    font-size: 23px;
+    margin-bottom: 22px;
+}
+
+.inputGroup {
+    margin-bottom: 15px;
+}
+
+.inputGroup label {
+    display: block;
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.inputGroup input {
+    width: 100%;
+    height: 43px;
+    padding: 0 12px;
+    border: 1px solid #363139;
+    background: #09080a;
+    color: white;
+    outline: none;
+}
+
+.inputGroup input:focus {
+    border-color: #694080;
+}
+
+.primaryButton {
+    width: 100%;
+    height: 43px;
+    border: 0;
+    background: #694080;
+    color: white;
+}
+
+.primaryButton:hover {
+    background: #794993;
+}
+
+.secondaryButton {
+    width: 100%;
+    height: 43px;
+    margin-top: 9px;
+    border: 1px solid #38333a;
+    background: transparent;
+    color: #aaa;
+}
+
+.secondaryButton:hover {
+    background: #19161a;
+}
+
+.loginMessage {
+    min-height: 20px;
+    margin-top: 15px;
+    color: #777;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.loginError {
+    color: #d77676;
+}
+
+
+/* BAN */
+
+#banScreen {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #080709;
+    z-index: 900;
+}
+
+.banBox {
+    width: 420px;
+    padding: 38px;
+    background: #111012;
+    border: 1px solid #332a35;
+}
+
+.banTitle {
+    font-size: 27px;
+    margin-bottom: 28px;
+}
+
+.banRow {
+    padding: 15px 0;
+    border-bottom: 1px solid #2b262d;
+}
+
+.banLabel {
+    color: #777;
+    font-size: 10px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+}
+
+.banValue {
+    color: #ddd;
+    font-size: 14px;
+}
+
+.banButton {
+    width: 100%;
+    height: 42px;
+    margin-top: 25px;
+    border: 1px solid #39343c;
+    background: transparent;
+    color: #bbb;
+}
+
+
+/* DASHBOARD */
+
+#dashboard {
+    position: fixed;
+    inset: 0;
+    display: none;
+    background: #080709;
+}
+
+.topBar {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    border-bottom: 1px solid #242027;
+    background: #0d0b0e;
+}
+
+.smallLogo {
+    font-size: 21px;
+    margin-right: 45px;
+}
+
+.navItem {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #694080;
+    font-size: 13px;
+}
+
+.profileTop {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #201524;
+    border: 1px solid #45304e;
+}
+
+.profileName {
+    font-size: 13px;
+}
+
+.profileStatus {
+    margin-top: 2px;
+    color: #55c76a;
+    font-size: 10px;
+}
+
+.page {
+    height: calc(100% - 65px);
+    padding: 40px 45px;
+    overflow: auto;
+}
+
+.welcome {
+    font-size: 29px;
+    margin-bottom: 7px;
+}
+
+.description {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 40px;
+}
+
+.sectionTitle {
+    color: #777;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 13px;
+}
+
+.gamesGrid,
+.storeGames {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.gameTile,
+.storeGame {
+    width: 190px;
+    height: 170px;
+    position: relative;
+    background: #111012;
+    border: 1px solid #2d2830;
+    cursor: pointer;
+    user-select: none;
+}
+
+.gameTile:hover,
+.storeGame:hover {
+    background: #171419;
+    border-color: #483a4e;
+}
+
+.gameIcon,
+.storeGameIcon {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #18151a;
+    border: 1px solid #302a32;
+    color: #aaa;
+    font-size: 10px;
+}
+
+.gameName,
+.storeGameName {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    font-size: 16px;
+}
+
+.gameDescription {
+    position: absolute;
+    left: 18px;
+    bottom: 38px;
+    color: #69636c;
+    font-size: 10px;
+}
+
+
+/* STORE */
+
+#storePage {
+    position: fixed;
+    inset: 0;
+    display: none;
+    background: #080709;
+    z-index: 100;
+}
+
+.storeTopBar {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    background: #0d0b0e;
+    border-bottom: 1px solid #242027;
+}
+
+.storeBack {
+    height: 35px;
+    padding: 0 15px;
+    margin-right: 20px;
+    border: 1px solid #39343c;
+    background: transparent;
+    color: #aaa;
+}
+
+.storeBack:hover {
+    background: #19161b;
+    color: white;
+}
+
+.storePageTitle {
+    font-size: 21px;
+}
+
+.storePageContent {
+    padding: 45px;
+}
+
+
+/* DETAILS */
+
+#gameDetailsPage {
+    position: fixed;
+    inset: 0;
+    display: none;
+    background: #080709;
+    z-index: 150;
+}
+
+.detailsTopBar {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    background: #0d0b0e;
+    border-bottom: 1px solid #242027;
+}
+
+.detailsBack {
+    height: 35px;
+    padding: 0 15px;
+    margin-right: 20px;
+    border: 1px solid #39343c;
+    background: transparent;
+    color: #aaa;
+}
+
+.detailsContent {
+    padding: 55px;
+}
+
+.detailsIcon {
+    width: 110px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #18151a;
+    border: 1px solid #302a32;
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+.detailsTitle {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.detailsDescription {
+    max-width: 600px;
+    color: #888;
+    line-height: 1.6;
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+.downloadButton {
+    min-width: 140px;
+    height: 42px;
+    padding: 0 22px;
+    border: 0;
+    background: #694080;
+    color: white;
+}
+
+.downloadButton:disabled {
+    opacity: .55;
+}
+
+.downloadArea {
+    display: none;
+    width: 400px;
+    max-width: 100%;
+}
+
+.downloadText {
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.progressBackground {
+    width: 100%;
+    height: 6px;
+    background: #28232a;
+}
+
+.progressBar {
+    width: 0%;
+    height: 100%;
+    background: #694080;
+}
+
+
+/* NOTICE */
+
+.notice {
+    width: 100%;
+    max-width: 850px;
+    margin-top: 42px;
+    padding: 18px;
+    background: #111012;
+    border: 1px solid #302a32;
+}
+
+.noticeTitle {
+    color: #694080;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-bottom: 9px;
+}
+
+.noticeText {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* PROFILE */
+
+#profilePanel {
+    position: fixed;
+    right: -360px;
+    top: 0;
+    width: 360px;
+    height: 100%;
+    padding: 35px;
+    background: #111012;
+    border-left: 1px solid #302933;
+    z-index: 500;
+    transition: right .2s;
+}
+
+#profilePanel.open {
+    right: 0;
+}
+
+.closeProfile {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    border: 0;
+    background: transparent;
+    color: #777;
+    font-size: 22px;
+}
+
+.profileTitle {
+    font-size: 25px;
+    margin-bottom: 30px;
+}
+
+.largeAvatar {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    background: #201524;
+    border: 1px solid #45304e;
+    font-size: 27px;
+}
+
+.panelGamertag {
+    font-size: 19px;
+}
+
+.panelUserId {
+    color: #777;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    margin: 28px 0;
+    background: #2d2730;
+}
+
+.logoutButton {
+    width: 100%;
+    height: 42px;
+    border: 1px solid #39333b;
+    background: transparent;
+    color: #bbb;
+}
+
+.adminButton {
+    width: 100%;
+    height: 42px;
+    margin-top: 10px;
+    border: 1px solid #694080;
+    background: transparent;
+    color: #c89bdd;
+}
+
+
+/* ADMIN */
+
+#adminPanel {
+    position: fixed;
+    inset: 0;
+    display: none;
+    background: #080709;
+    z-index: 800;
+}
+
+.adminTop {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    background: #0d0b0e;
+    border-bottom: 1px solid #242027;
+}
+
+.adminTitle {
+    font-size: 21px;
+}
+
+.adminClose {
+    margin-left: auto;
+    height: 35px;
+    padding: 0 15px;
+    border: 1px solid #39343c;
+    background: transparent;
+    color: #aaa;
+}
+
+.adminContent {
+    padding: 35px;
+    overflow: auto;
+    height: calc(100% - 65px);
+}
+
+.adminSearch {
+    display: flex;
+    gap: 10px;
+    max-width: 700px;
+}
+
+.adminSearch input {
+    flex: 1;
+    height: 42px;
+    padding: 0 12px;
+    background: #111012;
+    border: 1px solid #363139;
+    color: white;
+    outline: none;
+}
+
+.adminSearch button {
+    width: 100px;
+    border: 0;
+    background: #694080;
+    color: white;
+}
+
+.adminResults {
+    margin-top: 25px;
+    max-width: 700px;
+}
+
+.adminPlayer {
+    padding: 17px;
+    margin-bottom: 8px;
+    background: #111012;
+    border: 1px solid #2d2830;
+}
+
+.adminNotice {
+    max-width: 700px;
+    margin-top: 45px;
+}
+
+.adminNotice textarea {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
+    padding: 12px;
+    background: #111012;
+    border: 1px solid #363139;
+    color: white;
+    outline: none;
+}
+
+.saveNotice {
+    margin-top: 10px;
+    width: 130px;
+    height: 40px;
+    border: 0;
+    background: #694080;
+    color: white;
+}
+
+.adminMessage {
+    margin-top: 10px;
+    color: #777;
+    font-size: 12px;
+}
+
+
+/* GAME CONTEXT MENU */
+
+#gameContext {
+    position: fixed;
+    display: none;
+    width: 150px;
+    background: #151217;
+    border: 1px solid #39333d;
+    z-index: 700;
+}
+
+.contextButton {
+    width: 100%;
+    height: 40px;
+    border: 0;
+    border-bottom: 1px solid #2d2830;
+    background: transparent;
+    color: #bbb;
+    text-align: left;
+    padding-left: 14px;
+}
+
+.contextButton:hover {
+    background: #211b24;
+    color: white;
+}
+
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+    .loginBox {
+        width: calc(100% - 30px);
+    }
+
+    .page,
+    .storePageContent,
+    .detailsContent {
+        padding: 30px 20px;
+    }
+
+    .gameTile,
+    .storeGame {
+        width: 100%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- LOADING -->
+
 <div id="loadingScreen">
+
     <div class="loadingBox">
-        <div class="loadingTitle">Loading Myte</div>
+
+        <div class="loadingTitle">
+            Loading Myte
+        </div>
+
         <div id="loadingText" class="loadingText">
             Loading PlayFab...
         </div>
 
         <button
-            id="retryButton"
-            onclick="retryPlayFab()"
-            style="
-                display:none;
-                margin-top:20px;
-                padding:10px 22px;
-                background:#694080;
-                color:white;
-                border:0;
-                cursor:pointer;
-            ">
+            id="loadingRetry"
+            class="loadingRetry"
+            onclick="retryPlayFab()">
             Retry
         </button>
+
     </div>
+
 </div>
 
+
+<!-- LOGIN -->
+
+<div id="loginScreen">
+
+    <div class="loginBox">
+
+        <div class="logo">
+            <span>●</span> Myte
+        </div>
+
+        <div class="subtitle">
+            Sign in to your account
+        </div>
+
+        <div id="loginTitle" class="loginTitle">
+            Sign in
+        </div>
+
+
+        <div id="loginForm">
+
+            <div class="inputGroup">
+
+                <label>
+                    Gamertag
+                </label>
+
+                <input
+                    id="loginUsername"
+                    maxlength="20">
+
+            </div>
+
+
+            <div class="inputGroup">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    id="loginPassword"
+                    type="password">
+
+            </div>
+
+
+            <button
+                class="primaryButton"
+                onclick="login()">
+                Sign in
+            </button>
+
+
+            <button
+                class="secondaryButton"
+                onclick="showRegister()">
+                Create account
+            </button>
+
+        </div>
+
+
+        <div
+            id="registerForm"
+            style="display:none">
+
+            <div class="inputGroup">
+
+                <label>
+                    Gamertag
+                </label>
+
+                <input
+                    id="registerUsername"
+                    maxlength="20">
+
+            </div>
+
+
+            <div class="inputGroup">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    id="registerPassword"
+                    type="password">
+
+            </div>
+
+
+            <div class="inputGroup">
+
+                <label>
+                    Confirm password
+                </label>
+
+                <input
+                    id="registerPasswordConfirm"
+                    type="password">
+
+            </div>
+
+
+            <button
+                class="primaryButton"
+                onclick="register()">
+                Create account
+            </button>
+
+
+            <button
+                class="secondaryButton"
+                onclick="showLogin()">
+                Back
+            </button>
+
+        </div>
+
+
+        <div
+            id="loginMessage"
+            class="loginMessage">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- BAN -->
+
+<div id="banScreen">
+
+    <div class="banBox">
+
+        <div class="banTitle">
+            You have been banned.
+        </div>
+
+
+        <div class="banRow">
+
+            <div class="banLabel">
+                Reason
+            </div>
+
+            <div
+                id="banReason"
+                class="banValue">
+                No reason provided.
+            </div>
+
+        </div>
+
+
+        <div class="banRow">
+
+            <div class="banLabel">
+                Unbanned
+            </div>
+
+            <div
+                id="banTime"
+                class="banValue">
+                Unknown
+            </div>
+
+        </div>
+
+
+        <button
+            class="banButton"
+            onclick="closeBan()">
+            Back to sign in
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- DASHBOARD -->
+
+<div id="dashboard">
+
+    <div class="topBar">
+
+        <div class="smallLogo">
+            <span>●</span> Myte
+        </div>
+
+        <div class="navItem">
+            Games
+        </div>
+
+
+        <div
+            class="profileTop"
+            onclick="openProfile()">
+
+            <div
+                id="topAvatar"
+                class="avatar">
+                ?
+            </div>
+
+            <div>
+
+                <div
+                    id="topGamertag"
+                    class="profileName">
+                    Player
+                </div>
+
+                <div class="profileStatus">
+                    ● Online
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="page">
+
+        <div class="welcome">
+            Welcome,
+            <span id="welcomeName">
+                Player
+            </span>
+        </div>
+
+
+        <div class="description">
+            Your games
+        </div>
+
+
+        <div class="sectionTitle">
+            Games
+        </div>
+
+
+        <div
+            id="gamesGrid"
+            class="gamesGrid">
+        </div>
+
+
+        <div
+            id="notice"
+            class="notice"
+            style="display:none">
+
+            <div class="noticeTitle">
+                Message
+            </div>
+
+            <div
+                id="noticeText"
+                class="noticeText">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- STORE -->
+
+<div id="storePage">
+
+    <div class="storeTopBar">
+
+        <button
+            class="storeBack"
+            onclick="closeStore()">
+            Back
+        </button>
+
+        <div class="storePageTitle">
+            Game Store
+        </div>
+
+    </div>
+
+
+    <div class="storePageContent">
+
+        <div class="sectionTitle">
+            Games
+        </div>
+
+
+        <div class="storeGames">
+
+
+            <div
+                class="storeGame"
+                onclick="openSnakeDetails()">
+
+                <div class="storeGameIcon">
+                    SNAKE
+                </div>
+
+                <div class="storeGameName">
+                    Snake
+                </div>
+
+            </div>
+
+
+            <div
+                class="storeGame"
+                onclick="openScraftDetails()">
+
+                <div class="storeGameIcon">
+                    SCRAFT
+                </div>
+
+                <div class="storeGameName">
+                    Scraft
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- GAME DETAILS -->
+
+<div id="gameDetailsPage">
+
+    <div class="detailsTopBar">
+
+        <button
+            class="detailsBack"
+            onclick="closeDetails()">
+            Back
+        </button>
+
+        <div class="storePageTitle">
+            Game Store
+        </div>
+
+    </div>
+
+
+    <div class="detailsContent">
+
+        <div
+            id="detailsIcon"
+            class="detailsIcon">
+            GAME
+        </div>
+
+
+        <div
+            id="detailsTitle"
+            class="detailsTitle">
+            Game
+        </div>
+
+
+        <div
+            id="detailsDescription"
+            class="detailsDescription">
+        </div>
+
+
+        <button
+            id="downloadButton"
+            class="downloadButton"
+            onclick="downloadCurrentGame()">
+            Download
+        </button>
+
+
+        <div
+            id="downloadArea"
+            class="downloadArea">
+
+            <div
+                id="downloadText"
+                class="downloadText">
+                Downloading...
+            </div>
+
+
+            <div class="progressBackground">
+
+                <div
+                    id="progressBar"
+                    class="progressBar">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div id="profilePanel">
+
+    <button
+        class="closeProfile"
+        onclick="closeProfile()">
+        ×
+    </button>
+
+
+    <div class="profileTitle">
+        Profile
+    </div>
+
+
+    <div
+        id="largeAvatar"
+        class="largeAvatar">
+        ?
+    </div>
+
+
+    <div
+        id="panelGamertag"
+        class="panelGamertag">
+        Player
+    </div>
+
+
+    <div
+        id="panelUserId"
+        class="panelUserId">
+        User ID
+    </div>
+
+
+    <div class="divider"></div>
+
+
+    <div style="color:#777;font-size:10px">
+        STATUS
+    </div>
+
+
+    <div
+        style="color:#55c76a;font-size:13px;margin-top:7px">
+        ● Online
+    </div>
+
+
+    <div
+        id="adminArea"
+        style="display:none">
+
+        <div class="divider"></div>
+
+        <div style="color:#777;font-size:10px">
+            ADMIN
+        </div>
+
+
+        <button
+            class="adminButton"
+            onclick="openAdminPanel()">
+            Open Admin Panel
+        </button>
+
+    </div>
+
+
+    <div class="divider"></div>
+
+
+    <button
+        class="logoutButton"
+        onclick="logout()">
+        Sign out
+    </button>
+
+</div>
+
+
+<!-- ADMIN -->
+
+<div id="adminPanel">
+
+    <div class="adminTop">
+
+        <div class="adminTitle">
+            Myte Admin
+        </div>
+
+
+        <button
+            class="adminClose"
+            onclick="closeAdminPanel()">
+            Close
+        </button>
+
+    </div>
+
+
+    <div class="adminContent">
+
+        <div class="sectionTitle">
+            Player management
+        </div>
+
+
+        <div
+            class="adminPlayer"
+            style="cursor:default">
+
+            Player searching and banning must be
+            handled through a secure server-side
+            PlayFab function.
+
+        </div>
+
+
+        <div class="adminNotice">
+
+            <div class="sectionTitle">
+                Site Message
+            </div>
+
+
+            <textarea
+                id="adminNoticeInput"
+                placeholder="Enter the message shown on Myte">
+            </textarea>
+
+
+            <button
+                class="saveNotice"
+                onclick="saveNotice()">
+                Save Message
+            </button>
+
+
+            <div
+                id="adminMessage"
+                class="adminMessage">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- HOLD MENU -->
+
+<div id="gameContext">
+
+    <button
+        class="contextButton"
+        onclick="deleteSelectedGame()">
+        Delete
+    </button>
+
+
+    <button
+        class="contextButton"
+        onclick="closeGameContext()">
+        Cancel
+    </button>
+
+</div>
+
+
 <script>
+
+
+/* SETTINGS */
+
 const TITLE_ID = "16F240";
 
-let playFabReady = false;
+const OWNED_GAMES_KEY = "OwnedGames";
+
+const ADMIN_KEY = "Admin";
+
+const NOTICE_KEY = "Notice";
+
+
+/* VARIABLES */
+
+let currentUsername = "";
+
+let currentPlayFabId = "";
+
+let ownedGames = [];
+
+let isAdmin = false;
+
+let currentDetailsGame = null;
+
+let downloadTimer = null;
+
+let holdTimer = null;
+
+let selectedGame = null;
+
 let playFabAttempts = 0;
 
+let playFabStarted = false;
+
+
+/* LOADING */
+
 function setLoading(text) {
+
     const element =
-        document.getElementById("loadingText");
+        document.getElementById(
+            "loadingText"
+        );
 
     if (element) {
         element.textContent = text;
     }
+
 }
+
 
 function retryPlayFab() {
 
     playFabAttempts = 0;
 
-    const retry =
-        document.getElementById("retryButton");
+    document.getElementById(
+        "loadingRetry"
+    ).style.display = "none";
 
-    if (retry) {
-        retry.style.display = "none";
-    }
-
-    setLoading("Loading PlayFab...");
+    setLoading(
+        "Loading PlayFab..."
+    );
 
     checkPlayFab();
+
 }
+
 
 function checkPlayFab() {
 
@@ -60,21 +1469,15 @@ function checkPlayFab() {
         typeof PlayFabClientSDK !== "undefined"
     ) {
 
-        playFabReady = true;
-
-        PlayFab.settings.titleId =
-            TITLE_ID;
-
-        setLoading(
-            "Checking account..."
-        );
-
-        restoreSession();
+        startMyte();
 
         return;
+
     }
 
+
     playFabAttempts++;
+
 
     if (playFabAttempts >= 40) {
 
@@ -82,24 +1485,384 @@ function checkPlayFab() {
             "PlayFab could not be loaded."
         );
 
-        const retry =
-            document.getElementById(
-                "retryButton"
-            );
 
-        if (retry) {
-            retry.style.display =
-                "inline-block";
-        }
+        document.getElementById(
+            "loadingRetry"
+        ).style.display =
+            "inline-block";
+
 
         return;
+
     }
+
 
     setTimeout(
         checkPlayFab,
         250
     );
+
 }
+
+
+function startMyte() {
+
+    if (playFabStarted) {
+        return;
+    }
+
+
+    playFabStarted = true;
+
+
+    PlayFab.settings.titleId =
+        TITLE_ID;
+
+
+    setLoading(
+        "Checking saved account..."
+    );
+
+
+    restoreSession();
+
+}
+
+
+/* LOGIN MESSAGE */
+
+function setLoginMessage(
+    text,
+    error = false
+) {
+
+    const element =
+        document.getElementById(
+            "loginMessage"
+        );
+
+
+    element.textContent =
+        text || "";
+
+
+    element.className =
+        error
+        ? "loginMessage loginError"
+        : "loginMessage";
+
+}
+
+
+/* LOGIN SCREEN */
+
+function showLogin() {
+
+    document.getElementById(
+        "loadingScreen"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "loginScreen"
+    ).style.display =
+        "flex";
+
+
+    document.getElementById(
+        "loginForm"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "registerForm"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "loginTitle"
+    ).textContent =
+        "Sign in";
+
+
+    setLoginMessage("");
+
+}
+
+
+function showRegister() {
+
+    document.getElementById(
+        "loginForm"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "registerForm"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "loginTitle"
+    ).textContent =
+        "Create account";
+
+
+    setLoginMessage("");
+
+}
+
+
+/* REGISTER */
+
+function register() {
+
+    const username =
+        document.getElementById(
+            "registerUsername"
+        ).value.trim();
+
+
+    const password =
+        document.getElementById(
+            "registerPassword"
+        ).value;
+
+
+    const confirm =
+        document.getElementById(
+            "registerPasswordConfirm"
+        ).value;
+
+
+    if (!username) {
+
+        setLoginMessage(
+            "Enter a gamertag.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    if (username.length < 3) {
+
+        setLoginMessage(
+            "Gamertag must be at least 3 characters.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    if (password.length < 6) {
+
+        setLoginMessage(
+            "Password must be at least 6 characters.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    if (password !== confirm) {
+
+        setLoginMessage(
+            "Passwords do not match.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    setLoginMessage(
+        "Creating account..."
+    );
+
+
+    PlayFabClientSDK.RegisterPlayFabUser(
+
+        {
+            TitleId: TITLE_ID,
+            Username: username,
+            Password: password,
+            DisplayName: username,
+            RequireBothUsernameAndEmail: false
+        },
+
+        function(result, error) {
+
+            if (error) {
+
+                handlePlayFabError(
+                    error
+                );
+
+                return;
+
+            }
+
+
+            currentUsername =
+                username;
+
+
+            currentPlayFabId =
+                result.data.PlayFabId;
+
+
+            ownedGames = [];
+
+            isAdmin = false;
+
+
+            PlayFabClientSDK.UpdateUserData(
+
+                {
+                    Data: {
+
+                        [OWNED_GAMES_KEY]:
+                            JSON.stringify([]),
+
+                        [ADMIN_KEY]:
+                            "false"
+
+                    }
+                },
+
+                function(
+                    dataResult,
+                    dataError
+                ) {
+
+                    enterDashboard();
+
+                }
+            );
+
+        }
+
+    );
+
+}
+
+
+/* LOGIN */
+
+function login() {
+
+    const username =
+        document.getElementById(
+            "loginUsername"
+        ).value.trim();
+
+
+    const password =
+        document.getElementById(
+            "loginPassword"
+        ).value;
+
+
+    if (!username || !password) {
+
+        setLoginMessage(
+            "Enter your gamertag and password.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    setLoginMessage(
+        "Signing in..."
+    );
+
+
+    PlayFabClientSDK.LoginWithPlayFab(
+
+        {
+
+            TitleId: TITLE_ID,
+
+            Username: username,
+
+            Password: password,
+
+            InfoRequestParameters: {
+
+                GetUserData: true,
+
+                GetPlayerProfile: true
+
+            }
+
+        },
+
+        function(result, error) {
+
+            if (error) {
+
+                handlePlayFabError(
+                    error
+                );
+
+                return;
+
+            }
+
+
+            currentPlayFabId =
+                result.data.PlayFabId;
+
+
+            currentUsername =
+                username;
+
+
+            if (
+                result.data.InfoResultPayload &&
+                result.data.InfoResultPayload.PlayerProfile &&
+                result.data.InfoResultPayload.PlayerProfile.DisplayName
+            ) {
+
+                currentUsername =
+                    result.data.InfoResultPayload
+                        .PlayerProfile
+                        .DisplayName;
+
+            }
+
+
+            readPlayerDataFromLogin(
+                result.data
+            );
+
+
+            enterDashboard();
+
+        }
+
+    );
+
+}
+
+
+/* RESTORE SESSION */
 
 function restoreSession() {
 
@@ -111,10 +1874,14 @@ function restoreSession() {
         showLogin();
 
         return;
+
     }
 
+
     PlayFabClientSDK.GetAccountInfo(
+
         {},
+
         function(result, error) {
 
             if (error) {
@@ -122,33 +1889,1509 @@ function restoreSession() {
                 showLogin();
 
                 return;
+
             }
+
 
             currentPlayFabId =
                 result.data.PlayFabId;
 
+
             currentUsername =
-                result.data.Username || "";
+                result.data.Username ||
+                "";
+
 
             loadPlayerData(
                 function() {
+
                     enterDashboard();
+
                 }
             );
+
+        }
+
+    );
+
+}
+
+
+/* PLAYER DATA */
+
+function readPlayerDataFromLogin(
+    data
+) {
+
+    ownedGames = [];
+
+    isAdmin = false;
+
+
+    const payload =
+        data.InfoResultPayload;
+
+
+    if (!payload) {
+        return;
+    }
+
+
+    const userData =
+        payload.UserData || {};
+
+
+    if (
+        userData[OWNED_GAMES_KEY] &&
+        userData[OWNED_GAMES_KEY].Value
+    ) {
+
+        try {
+
+            const parsed =
+                JSON.parse(
+                    userData[
+                        OWNED_GAMES_KEY
+                    ].Value
+                );
+
+
+            if (Array.isArray(parsed)) {
+
+                ownedGames =
+                    parsed;
+
+            }
+
+        } catch {
+
+            ownedGames = [];
+
+        }
+
+    }
+
+
+    if (
+        userData[ADMIN_KEY] &&
+        userData[ADMIN_KEY].Value
+    ) {
+
+        isAdmin =
+            userData[
+                ADMIN_KEY
+            ].Value.toLowerCase() ===
+            "true";
+
+    }
+
+
+    if (
+        userData[NOTICE_KEY] &&
+        userData[NOTICE_KEY].Value
+    ) {
+
+        showNotice(
+            userData[
+                NOTICE_KEY
+            ].Value
+        );
+
+    }
+
+}
+
+
+function loadPlayerData(
+    callback
+) {
+
+    PlayFabClientSDK.GetUserData(
+
+        {
+            Keys: [
+                OWNED_GAMES_KEY,
+                ADMIN_KEY,
+                NOTICE_KEY
+            ]
+        },
+
+        function(result, error) {
+
+            if (error) {
+
+                ownedGames = [];
+
+                isAdmin = false;
+
+                callback();
+
+                return;
+
+            }
+
+
+            readPlayerDataFromUserData(
+                result.data
+            );
+
+
+            callback();
+
+        }
+
+    );
+
+}
+
+
+function readPlayerDataFromUserData(
+    data
+) {
+
+    ownedGames = [];
+
+    isAdmin = false;
+
+
+    const userData =
+        data.Data || {};
+
+
+    if (
+        userData[OWNED_GAMES_KEY] &&
+        userData[OWNED_GAMES_KEY].Value
+    ) {
+
+        try {
+
+            const parsed =
+                JSON.parse(
+                    userData[
+                        OWNED_GAMES_KEY
+                    ].Value
+                );
+
+
+            if (Array.isArray(parsed)) {
+
+                ownedGames =
+                    parsed;
+
+            }
+
+        } catch {
+
+            ownedGames = [];
+
+        }
+
+    }
+
+
+    if (
+        userData[ADMIN_KEY] &&
+        userData[ADMIN_KEY].Value
+    ) {
+
+        isAdmin =
+            userData[
+                ADMIN_KEY
+            ].Value.toLowerCase() ===
+            "true";
+
+    }
+
+
+    if (
+        userData[NOTICE_KEY] &&
+        userData[NOTICE_KEY].Value
+    ) {
+
+        showNotice(
+            userData[
+                NOTICE_KEY
+            ].Value
+        );
+
+    }
+
+}
+
+
+function saveOwnedGames(
+    callback
+) {
+
+    PlayFabClientSDK.UpdateUserData(
+
+        {
+
+            Data: {
+
+                [OWNED_GAMES_KEY]:
+                    JSON.stringify(
+                        ownedGames
+                    )
+
+            }
+
+        },
+
+        function(result, error) {
+
+            callback(
+                !error
+            );
+
+        }
+
+    );
+
+}
+
+
+/* DASHBOARD */
+
+function enterDashboard() {
+
+    document.getElementById(
+        "loadingScreen"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "loginScreen"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "banScreen"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "storePage"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "gameDetailsPage"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "dashboard"
+    ).style.display =
+        "block";
+
+
+    updateProfile();
+
+    renderGames();
+
+}
+
+
+function updateProfile() {
+
+    document.getElementById(
+        "topGamertag"
+    ).textContent =
+        currentUsername;
+
+
+    document.getElementById(
+        "welcomeName"
+    ).textContent =
+        currentUsername;
+
+
+    document.getElementById(
+        "panelGamertag"
+    ).textContent =
+        currentUsername;
+
+
+    document.getElementById(
+        "panelUserId"
+    ).textContent =
+        "User ID: " +
+        currentPlayFabId;
+
+
+    const letter =
+        currentUsername
+            .charAt(0)
+            .toUpperCase();
+
+
+    document.getElementById(
+        "topAvatar"
+    ).textContent =
+        letter || "?";
+
+
+    document.getElementById(
+        "largeAvatar"
+    ).textContent =
+        letter || "?";
+
+
+    document.getElementById(
+        "adminArea"
+    ).style.display =
+        isAdmin
+        ? "block"
+        : "none";
+
+}
+
+
+/* GAMES */
+
+function renderGames() {
+
+    const grid =
+        document.getElementById(
+            "gamesGrid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    for (
+        const game of ownedGames
+    ) {
+
+        if (
+            game === "snake"
+        ) {
+
+            grid.appendChild(
+                createGameTile(
+                    "Snake",
+                    "Classic snake game",
+                    "SNAKE",
+                    "snake"
+                )
+            );
+
+        }
+
+
+        if (
+            game === "scraft"
+        ) {
+
+            grid.appendChild(
+                createGameTile(
+                    "Scraft",
+                    "A really fun game",
+                    "SCRAFT",
+                    "scraft"
+                )
+            );
+
+        }
+
+    }
+
+
+    const store =
+        createGameTile(
+            "Game Store",
+            "Browse games",
+            "STORE",
+            "store"
+        );
+
+
+    store.onclick =
+        function() {
+
+            openStore();
+
+        };
+
+
+    grid.appendChild(
+        store
+    );
+
+}
+
+
+function createGameTile(
+    name,
+    description,
+    icon,
+    gameId
+) {
+
+    const tile =
+        document.createElement(
+            "div"
+        );
+
+
+    tile.className =
+        "gameTile";
+
+
+    tile.innerHTML =
+
+        '<div class="gameIcon">' +
+            icon +
+        '</div>' +
+
+        '<div class="gameName">' +
+            name +
+        '</div>' +
+
+        '<div class="gameDescription">' +
+            description +
+        '</div>';
+
+
+    if (
+        gameId === "snake"
+    ) {
+
+        tile.onclick =
+            function() {
+
+                if (
+                    !selectedGame
+                ) {
+
+                    window.location.href =
+                        "games/snake.html";
+
+                }
+
+            };
+
+    }
+
+
+    if (
+        gameId === "scraft"
+    ) {
+
+        tile.onclick =
+            function() {
+
+                if (
+                    !selectedGame
+                ) {
+
+                    window.location.href =
+                        "games/scraft.html";
+
+                }
+
+            };
+
+    }
+
+
+    if (
+        gameId !== "store"
+    ) {
+
+        setupHold(
+            tile,
+            gameId
+        );
+
+    }
+
+
+    return tile;
+
+}
+
+
+/* HOLD GAME */
+
+function setupHold(
+    element,
+    gameId
+) {
+
+    element.addEventListener(
+        "mousedown",
+        function(event) {
+
+            holdTimer =
+                setTimeout(
+                    function() {
+
+                        selectedGame =
+                            gameId;
+
+
+                        showGameContext(
+                            event.clientX,
+                            event.clientY
+                        );
+
+                    },
+                    600
+                );
+
         }
     );
+
+
+    element.addEventListener(
+        "mouseup",
+        function() {
+
+            clearTimeout(
+                holdTimer
+            );
+
+        }
+    );
+
+
+    element.addEventListener(
+        "mouseleave",
+        function() {
+
+            clearTimeout(
+                holdTimer
+            );
+
+        }
+    );
+
+
+    element.addEventListener(
+        "contextmenu",
+        function(event) {
+
+            event.preventDefault();
+
+
+            selectedGame =
+                gameId;
+
+
+            showGameContext(
+                event.clientX,
+                event.clientY
+            );
+
+        }
+    );
+
 }
+
+
+function showGameContext(
+    x,
+    y
+) {
+
+    const menu =
+        document.getElementById(
+            "gameContext"
+        );
+
+
+    menu.style.left =
+        x + "px";
+
+
+    menu.style.top =
+        y + "px";
+
+
+    menu.style.display =
+        "block";
+
+}
+
+
+function closeGameContext() {
+
+    document.getElementById(
+        "gameContext"
+    ).style.display =
+        "none";
+
+
+    selectedGame =
+        null;
+
+}
+
+
+function deleteSelectedGame() {
+
+    if (!selectedGame) {
+        return;
+    }
+
+
+    ownedGames =
+        ownedGames.filter(
+            function(game) {
+
+                return game !==
+                    selectedGame;
+
+            }
+        );
+
+
+    saveOwnedGames(
+        function(success) {
+
+            renderGames();
+
+        }
+    );
+
+
+    closeGameContext();
+
+}
+
+
+document.addEventListener(
+    "mousedown",
+    function(event) {
+
+        const menu =
+            document.getElementById(
+                "gameContext"
+            );
+
+
+        if (
+            menu.style.display ===
+            "block" &&
+            !menu.contains(
+                event.target
+            )
+        ) {
+
+            closeGameContext();
+
+        }
+
+    }
+);
+
+
+/* STORE */
+
+function openStore() {
+
+    document.getElementById(
+        "dashboard"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "storePage"
+    ).style.display =
+        "block";
+
+}
+
+
+function closeStore() {
+
+    document.getElementById(
+        "storePage"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "dashboard"
+    ).style.display =
+        "block";
+
+}
+
+
+function openSnakeDetails() {
+
+    openGameDetails(
+        "snake",
+        "SNAKE",
+        "Snake",
+        "A classic snake game where you collect food, grow longer, and try to get the highest score."
+    );
+
+}
+
+
+function openScraftDetails() {
+
+    openGameDetails(
+        "scraft",
+        "SCRAFT",
+        "Scraft",
+        "It's like Minecraft, but bad. A really fun game that you can play."
+    );
+
+}
+
+
+function openGameDetails(
+    id,
+    icon,
+    name,
+    description
+) {
+
+    currentDetailsGame =
+        id;
+
+
+    document.getElementById(
+        "detailsIcon"
+    ).textContent =
+        icon;
+
+
+    document.getElementById(
+        "detailsTitle"
+    ).textContent =
+        name;
+
+
+    document.getElementById(
+        "detailsDescription"
+    ).textContent =
+        description;
+
+
+    const button =
+        document.getElementById(
+            "downloadButton"
+        );
+
+
+    const area =
+        document.getElementById(
+            "downloadArea"
+        );
+
+
+    document.getElementById(
+        "progressBar"
+    ).style.width =
+        "0%";
+
+
+    if (
+        ownedGames.includes(id)
+    ) {
+
+        button.textContent =
+            "Installed";
+
+
+        button.disabled =
+            true;
+
+
+        button.style.display =
+            "block";
+
+
+        area.style.display =
+            "none";
+
+    } else {
+
+        button.textContent =
+            "Download";
+
+
+        button.disabled =
+            false;
+
+
+        button.style.display =
+            "block";
+
+
+        area.style.display =
+            "none";
+
+    }
+
+
+    document.getElementById(
+        "storePage"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "gameDetailsPage"
+    ).style.display =
+        "block";
+
+}
+
+
+function closeDetails() {
+
+    if (downloadTimer) {
+
+        clearInterval(
+            downloadTimer
+        );
+
+        downloadTimer =
+            null;
+
+    }
+
+
+    document.getElementById(
+        "gameDetailsPage"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "storePage"
+    ).style.display =
+        "block";
+
+}
+
+
+/* DOWNLOAD */
+
+function downloadCurrentGame() {
+
+    if (!currentDetailsGame) {
+        return;
+    }
+
+
+    if (
+        ownedGames.includes(
+            currentDetailsGame
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "downloadButton"
+        );
+
+
+    const area =
+        document.getElementById(
+            "downloadArea"
+        );
+
+
+    const text =
+        document.getElementById(
+            "downloadText"
+        );
+
+
+    const bar =
+        document.getElementById(
+            "progressBar"
+        );
+
+
+    button.style.display =
+        "none";
+
+
+    area.style.display =
+        "block";
+
+
+    let progress = 0;
+
+
+    downloadTimer =
+        setInterval(
+            function() {
+
+                progress++;
+
+
+                bar.style.width =
+                    progress + "%";
+
+
+                text.textContent =
+                    "Downloading " +
+                    capitalize(
+                        currentDetailsGame
+                    ) +
+                    "... " +
+                    progress +
+                    "%";
+
+
+                if (
+                    progress >= 100
+                ) {
+
+                    clearInterval(
+                        downloadTimer
+                    );
+
+
+                    downloadTimer =
+                        null;
+
+
+                    text.textContent =
+                        "Saving game...";
+
+
+                    if (
+                        !ownedGames.includes(
+                            currentDetailsGame
+                        )
+                    ) {
+
+                        ownedGames.push(
+                            currentDetailsGame
+                        );
+
+                    }
+
+
+                    saveOwnedGames(
+                        function(success) {
+
+                            if (!success) {
+
+                                text.textContent =
+                                    "Could not save game.";
+
+                                button.style.display =
+                                    "block";
+
+                                return;
+
+                            }
+
+
+                            text.textContent =
+                                "Installed.";
+
+
+                            renderGames();
+
+
+                            setTimeout(
+                                function() {
+
+                                    document.getElementById(
+                                        "gameDetailsPage"
+                                    ).style.display =
+                                        "none";
+
+
+                                    document.getElementById(
+                                        "dashboard"
+                                    ).style.display =
+                                        "block";
+
+                                },
+                                700
+                            );
+
+                        }
+                    );
+
+                }
+
+            },
+            100
+        );
+
+}
+
+
+function capitalize(
+    text
+) {
+
+    return text
+        .charAt(0)
+        .toUpperCase() +
+        text.slice(1);
+
+}
+
+
+/* PROFILE */
+
+function openProfile() {
+
+    document.getElementById(
+        "profilePanel"
+    ).classList.add(
+        "open"
+    );
+
+}
+
+
+function closeProfile() {
+
+    document.getElementById(
+        "profilePanel"
+    ).classList.remove(
+        "open"
+    );
+
+}
+
+
+/* NOTICE */
+
+function showNotice(
+    text
+) {
+
+    const notice =
+        document.getElementById(
+            "notice"
+        );
+
+
+    document.getElementById(
+        "noticeText"
+    ).textContent =
+        text || "";
+
+
+    notice.style.display =
+        text
+        ? "block"
+        : "none";
+
+}
+
+
+/* ADMIN */
+
+function openAdminPanel() {
+
+    if (!isAdmin) {
+        return;
+    }
+
+
+    closeProfile();
+
+
+    document.getElementById(
+        "adminPanel"
+    ).style.display =
+        "block";
+
+}
+
+
+function closeAdminPanel() {
+
+    document.getElementById(
+        "adminPanel"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ADMIN NOTICE */
+
+function saveNotice() {
+
+    const text =
+        document.getElementById(
+            "adminNoticeInput"
+        ).value.trim();
+
+
+    document.getElementById(
+        "adminMessage"
+    ).textContent =
+        "A secure server-side function is required to change global site messages.";
+
+}
+
+
+/* LOGOUT */
+
+function logout() {
+
+    if (
+        typeof PlayFabClientSDK
+            .ForgetAllCredentials ===
+        "function"
+    ) {
+
+        PlayFabClientSDK
+            .ForgetAllCredentials();
+
+    }
+
+
+    currentUsername = "";
+
+    currentPlayFabId = "";
+
+    ownedGames = [];
+
+    isAdmin = false;
+
+
+    document.getElementById(
+        "dashboard"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "storePage"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "gameDetailsPage"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "adminPanel"
+    ).style.display =
+        "none";
+
+
+    closeProfile();
+
+
+    document.getElementById(
+        "loginPassword"
+    ).value =
+        "";
+
+
+    showLogin();
+
+}
+
+
+/* BAN */
+
+function showBan(
+    error
+) {
+
+    let reason =
+        "No reason provided.";
+
+
+    let unban =
+        "Unknown";
+
+
+    if (
+        error &&
+        error.errorDetails
+    ) {
+
+        const details =
+            error.errorDetails;
+
+
+        for (
+            const key in details
+        ) {
+
+            const lower =
+                key.toLowerCase();
+
+
+            let value =
+                details[key];
+
+
+            if (
+                Array.isArray(value)
+            ) {
+
+                value =
+                    value[0];
+
+            }
+
+
+            if (
+                lower.includes(
+                    "reason"
+                ) &&
+                value
+            ) {
+
+                reason =
+                    value;
+
+            }
+
+
+            if (
+                (
+                    lower.includes(
+                        "expiration"
+                    ) ||
+                    lower.includes(
+                        "expires"
+                    ) ||
+                    lower.includes(
+                        "unban"
+                    )
+                ) &&
+                value
+            ) {
+
+                const date =
+                    new Date(
+                        value
+                    );
+
+
+                if (
+                    !isNaN(
+                        date.getTime()
+                    )
+                ) {
+
+                    unban =
+                        date.toLocaleString();
+
+                } else {
+
+                    unban =
+                        value;
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "banReason"
+    ).textContent =
+        reason;
+
+
+    document.getElementById(
+        "banTime"
+    ).textContent =
+        unban;
+
+
+    document.getElementById(
+        "loginScreen"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "dashboard"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "banScreen"
+    ).style.display =
+        "flex";
+
+}
+
+
+function closeBan() {
+
+    document.getElementById(
+        "banScreen"
+    ).style.display =
+        "none";
+
+
+    showLogin();
+
+}
+
+
+/* ERROR HANDLING */
+
+function handlePlayFabError(
+    error
+) {
+
+    console.error(
+        "PlayFab error:",
+        error
+    );
+
+
+    const errorName =
+        error &&
+        error.error
+        ? String(
+            error.error
+        ).toLowerCase()
+        : "";
+
+
+    const errorMessage =
+        error &&
+        error.errorMessage
+        ? String(
+            error.errorMessage
+        ).toLowerCase()
+        : "";
+
+
+    const combined =
+        errorName +
+        " " +
+        errorMessage;
+
+
+    if (
+        combined.includes(
+            "banned"
+        )
+    ) {
+
+        showBan(
+            error
+        );
+
+        return;
+
+    }
+
+
+    if (
+        combined.includes(
+            "invalid username"
+        )
+    ) {
+
+        setLoginMessage(
+            "That username is invalid.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    if (
+        combined.includes(
+            "invalid password"
+        )
+    ) {
+
+        setLoginMessage(
+            "That password is incorrect.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    if (
+        combined.includes(
+            "account not found"
+        )
+    ) {
+
+        setLoginMessage(
+            "Account not found.",
+            true
+        );
+
+        return;
+
+    }
+
+
+    setLoginMessage(
+        error &&
+        error.errorMessage
+        ? error.errorMessage
+        : "PlayFab request failed.",
+        true
+    );
+
+}
+
+
+/* START */
 
 window.addEventListener(
     "load",
     function() {
 
+        document.getElementById(
+            "loadingScreen"
+        ).style.display =
+            "flex";
+
+
         setLoading(
             "Loading PlayFab..."
         );
+
 
         checkPlayFab();
 
     }
 );
+
 </script>
+
+</body>
+</html>
